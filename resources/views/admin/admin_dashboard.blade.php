@@ -22,18 +22,14 @@
 
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/datatables.net-bs5/buttons.bootstrap5.min.css') }}">
-    <!-- core:css -->
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/core/core.css') }}">
-    <!-- endinject -->
 
-    <!-- Plugin css for this page -->
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/flatpickr/flatpickr.min.css') }}">
-    <!-- End plugin css for this page -->
 
-    <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('backend/assets/fonts/feather-font/css/iconfont.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
-    <!-- endinject -->  
+    <link rel="stylesheet" href="{{ asset('backend/assets/vendors/sweetalert2/sweetalert2.min.css') }}">
+  
 
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('backend/assets/css/demo1/style.css') }}">
@@ -44,7 +40,39 @@
 
 
     <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.png') }}" />
+
+
+
+
+    <!-- javascript -->
+
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/vendors/core/core.js') }}"></script>
+
+    <script src="{{ asset('backend/assets/js/template.js') }}"></script>
+
+    {{-- <script src="{{ asset('backend/assets/js/dashboard-dark.js') }}"></script> --}}
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
+   <script src="{{ asset('backend/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js') }}"></script>
+
+
+
+    <script src="{{ asset('backend/assets/js/data-table.js') }}"></script>
+
+ 
+
+    {{-- <script src="{{ asset('js/sweatalert.js') }}"></script> --}}
+   
+    
+    <script src="{{ asset('backend/assets/js/code.js') }}"></script>
+
+    <script src="{{ asset('js/sweetalert2/sweetalert2.min.js') }}"></script>
+
+
+
+
+
 </head>
 
 <body class="settings-open sidebar-dark">
@@ -65,63 +93,17 @@
     </div>
 
 
-    <!-- core:js -->
-    <script src="{{ asset('backend/assets/vendors/core/core.js') }}"></script>
-    <!-- endinject -->
-
-    <!-- Plugin js for this page -->
-    <script src="{{ asset('backend/assets/vendors/flatpickr/flatpickr.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
-    <!-- End plugin js for this page -->
-
-    <!-- inject:js -->
-    <script src="{{ asset('backend/assets/vendors/feather-icons/feather.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/template.js') }}"></script>
-    <!-- endinject -->
 
 
 
-    <!-- Custom js for this page -->
-    <script src="{{ asset('backend/assets/js/dashboard-dark.js') }}"></script>
-    <!-- End custom js for this page -->
 
-    <script src="{{ asset('js/toastr.min.js') }}"></script>
-
-    <!-- Plugin js for this page -->
-    <script src="{{ asset('backend/assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
-    <script src="{{ asset('backend/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js') }}"></script>
-
-
-    {{-- <script type="text/javascript" src="{{ asset('backend/assets/vendors/datatables.net-bs5/dataTables.buttons.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('backend/assets/vendors/datatables.net-bs5/buttons.bootstrap5.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('backend/assets/vendors/datatables.net-bs5/jszip.min.js') }}"></script>
-
-    <script type="text/javascript" src="{{ asset('backend/assets/vendors/datatables.net-bs5/pdfmake.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('backend/assets/vendors/datatables.net-bs5/vfs_fonts.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('backend/assets/vendors/datatables.net-bs5/buttons.html5.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('backend/assets/vendors/datatables.net-bs5/buttons.print.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('backend/assets/vendors/datatables.net-bs5/buttons.colVis.min.js') }}"></script> --}}
-
-
-    <script src="{{ asset('backend/assets/js/data-table.js') }}"></script>
-
-    <script src="{{ asset('/js/color.js') }}"></script>
-
-
-
-    <script src="{{ asset('js/sweatalert.js') }}"></script>
-
-  
-    <!-- sweet alert -->
-
-    <script src="{{ asset('backend/assets/js/code.js') }}"></script>
 
     <script>
         @if (Session::has('message'))
             var type = "{{ Session::get('alert-type', 'info') }}"
             switch (type) {
                 case 'info':
-                    toastr.info(" {{ Session::get('message') }} "); 
+                    toastr.info(" {{ Session::get('message') }} ");
                     break;
 
                 case 'success':
@@ -143,4 +125,8 @@
 
 
 
+
 </html>
+
+<script src="{{ asset('backend/assets/vendors/feather-icons/feather.min.js') }}"></script>
+

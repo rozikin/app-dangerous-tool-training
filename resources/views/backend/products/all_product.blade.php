@@ -2,28 +2,53 @@
 
 @section('admin')
 
-<div class="page-content">
+<div class="page-content mt-5">
 
-    <nav class="page-breadcrumb">
-        <ol class="breadcrumb">
-            <a href="{{ route('add.product') }}" class="btn btn-primary mx-1"><i class="feather-16" data-feather="file-plus"></i> &nbsp;Add Product</a>
-        </ol>
-    </nav>
+   
 
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Product All</h6>
+
+                    <div>
+                        <div class="row">
+                            <div class="col">
+                                <nav class="page-breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <a href="{{ route('add.product') }}" class="btn btn-primary mx-1 btn-sm"><i class="feather-16" data-feather="file-plus"></i> &nbsp;Add Product</a>
+                                    </ol>
+                                </nav>
+                            </div>
+
+                            <div class="col">
+                                <h6 class="card-title text-center">Product All</h6>
+
+                            </div>
+                            <div class="col">
+                                <h6 class="card-title text-center"></h6>
+                            </div>
+                        </div>
+                       
+                    </div>
+                   
+
+                   
 
                     <div class="table-responsive">
                         <table id="dataTableExample" class="table table-sm">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Image</th>
+                                    {{-- <th>Image</th> --}}
+                                    <th>Code</th>
                                     <th>Name</th>
-                                    <th>Detail</th>
+                                    <th>Spesification</th>
+                                    <th>Color</th>
+                                    <th>Category</th>
+                                    <th>Allocation</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
                                     <th>Action</th>
 
                                 </tr>
@@ -32,14 +57,22 @@
                                 @foreach ($products as $key=> $item)
 
                                 <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>
+                                    <td>{{ $loop->iteration }}</td>
+                                    {{-- <td>
                                         <img class="wd-100 rounded-circle"
                                             src="{{(!empty($item->image))? url('upload/product/'.$item->image):url('upload/product/no_image.jpg')}}"
-                                            alt="profile">
+                                            alt="profile"> --}}
                                     </td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->detail }}</td>
+                                    <td>{{ $item->product_code }}</td>
+                                    <td>{{ $item->product_name }}</td>
+                                    <td>{{  Str::limit($item->product_spesification,20) }}</td>
+                               
+                                    <td>{{  $item->colors->color_name}}</td>
+                              
+                                    <td>{{$item->categorys->category_name }}</td>
+                                    <td>{{$item->allocations->department }}</td>
+                                    <td>{{ $item->product_price }}</td>
+                                    <td>{{ $item->product_stock }}</td>
                                  
                                
 

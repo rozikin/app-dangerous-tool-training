@@ -2,19 +2,41 @@
 
 @section('admin')
 
-<div class="page-content">
+<div class="page-content mt-5">
 
-    <nav class="page-breadcrumb">
-        <ol class="breadcrumb">
-            <a href="{{ route('add.admin') }}" class="btn btn-inverse-info mx-1"><i class="feather-16" data-feather="file-plus"></i> &nbsp;Add Admin</a>
-        </ol>
-    </nav>
+   
 
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Admin All</h6>
+
+                    
+                    <div>
+                        <div class="row">
+                            <div class="col">
+                                <nav class="page-breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <a href="{{ route('add.admin') }}" class="btn btn-inverse-info mx-1 btn-sm"><i class="feather-16" data-feather="file-plus"></i> &nbsp;Add Admin</a>
+                                    </ol>
+                                </nav>
+                            </div>
+
+                            <div class="col">
+                                <h6 class="card-title text-center">Admin All</h6>
+
+                            </div>
+                            <div class="col">
+                                <h6 class="card-title text-center"></h6>
+                            </div>
+                        </div>
+                       
+                    </div>
+                   
+
+                  
+
+                 
 
                     <div class="table-responsive">
                         <table id="dataTableExample" class="table table-sm">

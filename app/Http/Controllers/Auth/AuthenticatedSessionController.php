@@ -17,7 +17,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
+        // return view('auth.login');
+        return view('admin.admin_login');
     }
 
     /**
@@ -35,7 +36,7 @@ class AuthenticatedSessionController extends Controller
         } elseif($request->user()->role === 'agent'){
             $url = 'agent/dashboard';
         } elseif($request->user()->role === 'user'){
-            $url = '/dashboard';
+            $url = 'admin/dashboard';
         }
 
         return redirect()->intended($url);

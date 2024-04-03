@@ -5,16 +5,16 @@
     </a>
     <div class="navbar-content">
         <form class="search-form">
-            <div class="input-group">
+            {{-- <div class="input-group">
                 <div class="input-group-text">
                     <i data-feather="search"></i>
                 </div>
                 <input type="text" class="form-control" id="navbarForm" placeholder="Search here...">
-            </div>
+            </div> --}}
         </form>
         <ul class="navbar-nav">
 
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="appsDropdown" role="button"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i data-feather="grid"></i>
@@ -58,7 +58,7 @@
                         <a href="javascript:;">View all</a>
                     </div>
                 </div>
-            </li>
+            </li> --}}
 
             @php
 

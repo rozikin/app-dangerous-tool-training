@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\PropertyType;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class PropertyTypeController extends Controller
 {
  
-    public function AllType()
+    public function AllType(Request $request): View
     {
-        $types = PropertyType::latest()->get();
+        $types = PropertyType::paginate(10);
         return view('backend.type.all_type', compact('types'));
     }
 
@@ -77,5 +79,19 @@ class PropertyTypeController extends Controller
         );
 
         return redirect()->route('all.type')->with($notification);
+    }
+
+    public function CariType(Request $request)
+    {
+        // menangkap data pencarian
+        $cari = $request->cari;
+        
+        // mengambil data dari table guru sesuai pencarian data
+        $types = DB::table('property_types')
+        ->where('type_name','like',"%".$cari."%")
+        ->paginate();
+        
+        // mengirim data pegawai ke view index
+        return view('backend.type.all_type', compact('types'));
     }
 }

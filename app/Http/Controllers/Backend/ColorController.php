@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Color;
 use Illuminate\Http\Request;
 use DataTables;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ColorController extends Controller
 {
@@ -23,34 +24,84 @@ class ColorController extends Controller
 
     public function GetColor(Request $request){
 
-        // $colors = Color::latest()->get();
-        // return response()->json($colors);
-
         if ($request->ajax()) {
-
-  
-
             $data = Color::latest()->get();
-
-  
-
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
 
-                           $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editColor">Edit</a>';
-                           $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteColor">Delete</a>';
-                            return $btn;
+                    //     return '<div class="btn-group" role="group">
+                    //     <button id="btnGroupDrop1" type="button" class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    //    Action
+                    //     </button>
+                    //     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    //       <a class="dropdown-item editColor" href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'">Edit</a>
+                    //       <a class="dropdown-item deleteColor" href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'">Delete</a>
+                    //     </div>
+                    //   </div>';
+
+                      return   '<div class="d-flex align-items-center justify-content-between flex-wrap">
+                      <div class="d-flex align-items-center">
+                        
+                          <div class="d-flex align-items-center">
+                              <div class="actions dropdown">
+                                  <a href="#" data-bs-toggle="dropdown"> ••• </a>
+                                  <div class="dropdown-menu" role="menu">
+                                    
+                                  
+                                          <a href="javascript:void(0)"
+                                              class="dropdown-item editColor" data-id="'.$row->id.'"> &nbsp; Edit</a>
+                                   
+                          
+                                          <a href="javascript:void(0)"
+                                              class="dropdown-item text-danger deleteColor"
+                                           data-id="'.$row->id.'"> &nbsp; Delete</a>
+                                   
+
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>';
 
                     })
+
+                    // ->addColumn('qr_code', function($row){ return QrCode::size(30)->generate($row->color_code);})
 
                     ->rawColumns(['action'])
 
                     ->make(true);
+                 
 
         }
 
     }
+
+
+    public function GetColorGlobal(Request $request){
+
+        if ($request->ajax()) {
+            $data = Color::latest()->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+
+                        return '<a href="javascript:void(0)" class="select-col"  data-id="'.$row->id.'" data-name="'.$row->color_name.'">Select</a>';
+
+                    })
+
+                    // ->addColumn('qr_code', function($row){ return QrCode::size(30)->generate($row->color_code);})
+
+                    ->rawColumns(['action'])
+
+                    ->make(true);
+                 
+
+        }
+
+    }
+
+   
 
     /**
      * Show the form for creating a new resource.
@@ -65,29 +116,68 @@ class ColorController extends Controller
      */
     public function StoreColor(Request $request)
     {
-        $request->validate([
-            'color_code' => 'required',
-            'color_name' => 'required',
+        if( $request->color_id == ""){
 
-        ]);
+            $request->validate([
+                'color_code' => 'required|unique:colors|max:200',
+                'color_name' => 'required',
+    
+            ]);
 
-       $post = Color::updateOrCreate([
+            $post = Color::updateOrCreate([
 
-        'id' => $request->color_id
+   
+                'id' => $request->color_id
+        
+                 ],[
+                    'color_code' => $request->color_code,
+                    'color_name' => $request->color_name,
+        
+                ]);
+        
+        
+                //return response
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data Berhasil Disimpan!',
+                    'data'    => $post,
+                    'alert-type' => 'success'  
+                ]);
+    
 
-         ],[
-            'color_code' => $request->color_code,
-            'color_name' => $request->color_name,
+        }
+        else{
+            $request->validate([
+                'color_code' => 'required|max:200',
+                'color_name' => 'required',
+    
+            ]);
 
-        ]);
+            $post = Color::updateOrCreate([
 
+   
+                'id' => $request->color_id
+        
+                 ],[
+                    'color_code' => $request->color_code,
+                    'color_name' => $request->color_name,
+        
+                ]);
+        
+        
+                //return response
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data Berhasil Disimpan!',
+                    'data'    => $post,
+                    'alert-type' => 'success'  
+                ]);
+    
+        }
+      
+        
 
-        //return response
-        return response()->json([
-            'success' => true,
-            'message' => 'Data Berhasil Disimpan!',
-            'data'    => $post  
-        ]);
+    
     }
     
 
@@ -99,12 +189,14 @@ class ColorController extends Controller
         //
     }
 
+
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function EditColor($id)
     {
-        $colors = Color::findOrFail($id);
+
+        $colors = Color::find($id);
         // return view('backend.products.edit_product',compact('products'));
         return response()->json($colors);
     }

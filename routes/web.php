@@ -9,6 +9,10 @@ use App\Http\Controllers\Backend\RoleController;
 use Spatie\Permission\Contracts\Permission;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\ColorController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductAllocationController;
+use App\Http\Controllers\ProductInController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +26,16 @@ use App\Http\Controllers\Backend\ColorController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin.admin_login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/login', function () {
+    return view('admin.admin_login');
+});
+
+// Route::get('/dashboard', function () {
+//     return view('admin.dashboard');
+// });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -60,6 +68,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::controller(PropertyTypeController::class)->group(function () {
         Route::get('/all/type', 'AllType')->name('all.type')->middleware('can:all.type');
         Route::get('/add/type', 'AddType')->name('add.type')->middleware('can:add.type');
+        Route::get('/cari/type', 'CariType')->name('cari.type')->middleware('can:all.type');
         Route::post('/store/type', 'StoreType')->name('store.type');
         Route::get('/edit/type/{id}', 'EditType')->name('edit.type')->middleware('can:edit.type');
         Route::post('/update/type', 'UpdateType')->name('update.type');
@@ -112,7 +121,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/delete/admin/{id}', 'DeleteAdmin')->name('delete.admin')->middleware('can:delete.admin');
     });
 
- 
+
        //product User All Route
        Route::controller(ProductController::class)->group(function () {
         Route::get('/all/product', 'AllProduct')->name('all.product')->middleware('can:all.product');
@@ -122,19 +131,84 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('/update/product/{id}', 'UpdateProduct')->name('update.product');
         Route::get('/delete/product/{id}', 'DeleteProduct')->name('delete.product');
         Route::get('/export/product', 'ExportProduct')->name('export.product');
+        Route::get('/get/productin', 'GetProductin')->name('get.productin')->middleware('can:all.product');
+      
     });
 
-      //color User All Route
+      //color User All Color
       Route::controller(ColorController::class)->group(function () {
         Route::get('/all/color', 'AllColor')->name('all.color')->middleware('can:all.color');
         Route::get('/get/color', 'GetColor')->name('get.color')->middleware('can:all.color');
+        Route::get('/get/colorglobal', 'GetColorGlobal')->name('get.colorGlobal');
         Route::get('/add/color', 'AddColor')->name('add.color')->middleware('can:add.color');
+      
         Route::post('/store/color', 'StoreColor')->name('store.color');
         Route::get('/edit/color/{id}', 'EditColor')->name('edit.color')->middleware('can:edit.color');
         Route::post('/update/color/{id}', 'UpdateColor')->name('update.color');
         Route::get('/delete/color/{id}', 'DeleteColor')->name('delete.color');
         Route::get('/export/color', 'ExportColor')->name('export.color');
     });
+
+       //color User All Category
+       Route::controller(CategoryController::class)->group(function () {
+        Route::get('/all/category', 'AllCategory')->name('all.category')->middleware('can:all.category');
+        Route::get('/get/category', 'GetCategory')->name('get.category')->middleware('can:all.category');
+        Route::get('/get/categoryprod', 'GetCategoryProd')->name('get.categoryprod');
+        Route::get('/add/category', 'AddCategory')->name('add.category')->middleware('can:add.category');
+      
+        Route::post('/store/category', 'StoreCategory')->name('store.category');
+        Route::get('/edit/category/{id}', 'EditCategory')->name('edit.category')->middleware('can:edit.category');
+        Route::post('/update/category/{id}', 'UpdateCategory')->name('update.category');
+        Route::get('/delete/category/{id}', 'DeleteCategory')->name('delete.category');
+        Route::get('/export/category', 'ExportCategory')->name('export.category');
+    });
+
+     //product User All Route
+     Route::controller(ProductAllocationController::class)->group(function () {
+        Route::get('/all/product_allocation', 'AllProductAllocation')->name('all.product_allocation')->middleware('can:all.product_allocation');
+        Route::get('/add/product_allocation', 'AddProductAllocation')->name('add.product_allocation')->middleware('can:add.product_allocation');
+        Route::get('/get/product_allocation', 'GetProductAllocation')->name('get.product_allocation')->middleware('can:get.product_allocation');
+        Route::get('/get/product_allocationglobal', 'GetProductAllocationGlobal')->name('get.product_allocationglobal');
+      
+        Route::post('/store/product_allocation', 'StoreProductAllocation')->name('store.product_allocation');
+        Route::get('/edit/product_allocation/{id}', 'EditProductAllocation')->name('edit.product_allocation')->middleware('can:edit.product_allocation');
+        Route::post('/update/product_allocation/{id}', 'UpdateProductAllocation')->name('update.product_allocation');
+        Route::get('/delete/product_allocation/{id}', 'DeleteProductAllocation')->name('delete.product_allocation');
+        Route::get('/export/product_allocation', 'ExportProductAllocation')->name('export.product_allocation');
+    });
+
+    
+    
+     //product User All Route
+     Route::controller(ProductInController::class)->group(function () {
+        Route::get('/all/productin', 'AllProductIn')->name('all.productin')->middleware('can:all.productin');
+        Route::get('/add/productin', 'AddProductIn')->name('add.productin')->middleware('can:add.productin');
+        Route::post('/store/productin', 'StoreProductIn')->name('store.productin');
+        Route::get('/edit/productin/{id}', 'EditProductIn')->name('edit.productin')->middleware('can:edit.productin');
+        Route::post('/update/productin/{id}', 'UpdateProductIn')->name('update.productin');
+        Route::get('/delete/productin/{id}', 'DeleteProductIn')->name('delete.productin');
+        Route::get('/export/productin', 'ExportProductIn')->name('export.productin');
+        Route::get('/getkodein/productin', 'KodeOtomatisIN')->name('getkodein.kodein');
+    
+    });
+
+    Route::controller(SupplierController::class)->group(function () {
+        Route::get('/all/supplier', 'Allsupplier')->name('all.supplier')->middleware('can:all.supplier');
+        Route::get('/add/supplier', 'Addsupplier')->name('add.supplier')->middleware('can:add.supplier');
+        Route::post('/store/supplier', 'Storesupplier')->name('store.supplier');
+        Route::get('/edit/supplier/{id}', 'Editsupplier')->name('edit.supplier')->middleware('can:edit.supplier');
+        Route::post('/update/supplier/{id}', 'Updatesupplier')->name('update.supplier');
+        Route::get('/delete/supplier/{id}', 'Deletesupplier')->name('delete.supplier');
+        Route::get('/export/supplier', 'Exportsupplier')->name('export.supplier');
+        Route::get('/get/supplier', 'Getsupplier')->name('get.supplier')->middleware('can:all.supplier');
+        Route::get('/get/supplierin', 'GetSupplierin')->name('get.supplierin')->middleware('can:all.supplier');
+      
+    });
+
+
+          
+
+      
     
 
 }); //end admin middleware

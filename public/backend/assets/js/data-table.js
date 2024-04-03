@@ -17,6 +17,15 @@ $(function() {
 
   $(function() {
     var table = $('#dataTableExample').DataTable({
+      responsive: true
+      
+      // columnDefs: [{ width: 200, targets: 4 }],
+    // fixedColumns: true,
+    // paging: false,
+    // scrollCollapse: true,
+    // scrollX: true,
+    // scrollY: 300
+     
       // dom: 'Bfrtip',
       // "aLengthMenu": [
       //   [10, 30, 50, -1],

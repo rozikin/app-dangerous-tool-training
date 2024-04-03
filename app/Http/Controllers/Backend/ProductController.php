@@ -1,5 +1,6 @@
 <?php
 
+
 namespace  App\Http\Controllers\Backend;
 
 use App\Exports\ProductExport;
@@ -8,6 +9,10 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\CategoryProduct;
+use App\Models\ProductAllocation;
+use App\Models\Color;
+use DataTables;
 
 
 
@@ -20,11 +25,10 @@ class ProductController extends Controller
 
     {
 
-        $products = Product::latest()->get();
+        $products = Product::with('colors','categorys','allocations')->get();
         return view('backend.products.all_product',compact('products'));
 
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -34,6 +38,26 @@ class ProductController extends Controller
         return view('backend.products.add_product');
     }
 
+    public function GetProductin(Request $request){
+     
+        if ($request->ajax()) {
+            $data = Product::latest()->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+    
+                        return '<a href="javascript:void(0)" class="select-product"  data-id="'.$row->id.'"  data-kode="'.$row->product_code.'" data-nama="'.$row->product_name.'">Select</a>';
+    
+                    })
+                  
+                    ->rawColumns(['action'])
+    
+                    ->make(true);
+                 
+    
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -41,20 +65,22 @@ class ProductController extends Controller
     {
         $request->validate([
 
-            'name' => 'required',
-
-            'detail' => 'required',
+            'product_code' => 'required',
+            'product_name' => 'required',
+            'product_spesification' => 'required',
+            'product_category_id' => 'required',
+            'product_color_id' => 'required',
+            'product_allocation_id' => 'required',
+            'product_size' => 'required',
+            'product_group' => 'required',
+            'product_unit' => 'required',
+            'product_price' => 'required',
 
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
         ]);
 
     
-
-        $input = $request->all();
-
-    
-
         if ($image = $request->file('image')) {
 
             $destinationPath = 'upload/product/';
@@ -69,7 +95,22 @@ class ProductController extends Controller
 
       
 
-        Product::create($input);
+        Product::create([
+            
+            'product_code' => $request->product_code,
+            'product_name' => $request->product_name,
+            'product_spesification' => $request->product_spesification,
+            'product_category_id' => $request->product_category_id,
+            'product_color_id' => $request->product_color_id,
+            'product_allocation_id' => $request->product_allocation_id,
+            'product_size' => $request->product_size,
+            'product_group' => $request->product_group,
+            'product_unit' => $request->product_unit,
+            'product_price' => $request->product_price,
+            'image' => $profileImage,
+            'product_stock' => 1
+
+        ]);
 
         $notification = array(
             'message' => 'Create Successfully',
@@ -94,7 +135,15 @@ class ProductController extends Controller
     public function EditProduct($id)
     {
         $products = Product::findOrFail($id);
-        return view('backend.products.edit_product',compact('products'));
+
+        $id_category = $products->product_category_id;
+        $id_color = $products->product_color_id;
+        $id_allocation = $products->product_allocation_id;
+
+        $cat = CategoryProduct::findOrFail($id_category);
+        $col = Color::findOrFail($id_color);
+        $allo = ProductAllocation::findOrFail($id_allocation);
+        return view('backend.products.edit_product',compact('products','cat','col','allo'));
     }
 
     /**
@@ -105,8 +154,18 @@ class ProductController extends Controller
       
 
         $data = Product::findOrFail($id);
-        $data->name = $request->name;
-        $data->detail = $request->detail;
+        $data->product_code = $request->product_code;
+        $data->product_name = $request->product_name;
+        $data->product_spesification = $request->product_spesification;
+        $data->product_category_id = $request->product_category_id;
+        $data->product_color_id = $request->product_color_id;
+        $data->product_allocation_id = $request->product_allocation_id;
+        $data->product_size = $request->product_size;
+        $data->product_group = $request->product_group;
+        $data->product_price = $request->product_price;
+        $data->product_unit = $request->product_unit;
+        $data->product_stock = $request->product_stock;
+  
 
         if ($request->file('image')) {
             $file = $request->file('image');
@@ -149,6 +208,8 @@ class ProductController extends Controller
 
     }
 
+
+   
 
    
 }

@@ -1863,7 +1863,7 @@ progress {
 }
 
 .table-sm > :not(caption) > * > * {
-  padding: 0.55rem 0.55rem;
+  padding: 0rem 0rem;
 }
 
 .table-bordered > :not(caption) > * {
@@ -2016,6 +2016,33 @@ progress {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+.table thead th {
+  color: #ffffff;
+  background: #324960;
+  
+  padding: 0.5rem;
+}
+
+
+.table thead th:nth-child(odd) {
+  color: #ffffff;
+  background: #324960;
+}
+.table thead th:nth-child(even) {
+  color: #ffffff;
+  background: #324960;
+}
+
+.table tbody td {
+  padding: 0.2rem;
+}
+
+
+
+
+
+
 
 @media (max-width: 575.98px) {
   .table-responsive-sm {
@@ -2174,11 +2201,13 @@ progress {
   padding-left: 0;
 }
 
+
 .form-control-sm {
-  min-height: calc(1.5em + 0.782rem + 2px);
-  padding: 0.391rem 0.8rem;
+  min-height: calc(0.5em + 0.782rem + 1px);
+  width: 80%;
+  padding: 0.2rem;
   font-size: 0.812rem;
-  border-radius: 0.25rem;
+  /* border-radius: 0.25rem; */
 }
 .form-control-sm::file-selector-button {
   padding: 0.391rem 0.8rem;
@@ -21245,9 +21274,20 @@ div.tox .btn-group-lg > .btn-icon-text.tox-button .btn-icon-append,
 .table thead th {
   border-top: 0;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
   color: #7987a1;
+}
+
+
+/* table.dataTable td {
+  font-size: 11px;
+} */
+
+
+/*custom  */
+.table tbody tr td {
+  font-size: 12px;
 }
 .table thead th i {
   margin-left: 0.325rem;
@@ -21260,6 +21300,15 @@ div.tox .btn-group-lg > .btn-icon-text.tox-button .btn-icon-append,
   width: 36px;
   height: 36px;
   border-radius: 100%;
+}
+
+.dataTables_paginate .paging_simple_numbers {
+padding: 0rem;
+}
+
+div.table-responsive > div.dataTables_wrapper > div.row {
+  margin: 0;
+  font-size: 13px;
 }
 
 .timeline {

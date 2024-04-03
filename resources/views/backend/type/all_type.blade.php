@@ -18,8 +18,16 @@
                     <div class="card-body">
                         <h6 class="card-title">Property Type All</h6>
 
+                        <form  action="/cari/type" method="GET">
+                            <div class="input-group mb-3">
+                                <input type="text" name="cari" class="form-control form-control-lg" placeholder="Search Here" value="{{ old('cari') }}">
+                                <button type="submit" class="input-group-text btn-success"><i class="bi bi-search me-2"></i> Search</button>
+                            </div>
+                        </form>
+
+
                         <div class="table-responsive">
-                            <table id="dataTableExample" class="table table-sm">
+                            <table id="dataTableExamplex" class="table table-sm">
                                 <thead>
                                     <tr>
                                         <th>Sl</th>
@@ -31,7 +39,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($types as $key => $item)
+                                    @forelse ($types as $key => $item)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $item->type_name }}</td>
@@ -66,9 +74,22 @@
 
 
                                         </tr>
-                                    @endforeach
+                                        @empty
+
+                                        <tr>
+                        
+                                            <td colspan="3">There are no users.</td>
+                        
+                                        </tr>
+                        
+                                    @endforelse
                                 </tbody>
                             </table>
+                            <br />
+
+
+
+                            {{$types->links('pagination::bootstrap-5') }}
                         </div>
                     </div>
                 </div>

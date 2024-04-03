@@ -21,7 +21,7 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <h6 class="card-title">Add Roles in Permission</h6>
+                            <h6 class="card-title text-center">Add Roles in Permission</h6>
 
                             <form id="myForm" method="POST" action="{{ route('roles.permission.store') }}" class="forms-sample">
                                 @csrf

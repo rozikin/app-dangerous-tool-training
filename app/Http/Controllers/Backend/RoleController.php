@@ -21,7 +21,7 @@ class RoleController extends Controller
 
     public function AllPermission()
     {
-        $permissions = Permission::all();
+        $permissions = Permission::latest()->get();
         return view('backend.pages.permission.all_permission', compact('permissions'));
     }
 
