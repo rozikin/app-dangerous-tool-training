@@ -17,10 +17,28 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-                ->name('login');
+ 
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    
+    Route::get('/',function(){
+        if (auth()->check()) {
+            // Jika sudah, arahkan ke halaman dashboard atau halaman yang sesuai
+            if (auth()->user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif (auth()->user()->role === 'agent') {
+                return redirect()->route('agent.dashboard');
+            } elseif (auth()->user()->role === 'user') {
+                return redirect()->route('user.dashboard');
+            }
+        }
+        
+        // Jika belum terautentikasi, arahkan ke halaman login
+        return view('admin.admin_login');
+    });
+
+
+
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
                 ->name('password.request');

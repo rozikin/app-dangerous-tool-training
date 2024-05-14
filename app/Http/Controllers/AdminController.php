@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AdminController extends Controller
 {
@@ -30,6 +31,24 @@ class AdminController extends Controller
     public function AdminLogin()
     {
         return view('admin.admin_login');
+    }
+
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+
+        $request->session()->regenerate();
+
+        $url = '';
+        if($request->user()->role === 'admin'){
+            $url = 'admin/dashboard';
+        } elseif($request->user()->role === 'agent'){
+            $url = 'agent/dashboard';
+        } elseif($request->user()->role === 'user'){
+            $url = 'admin/dashboard';
+        }
+
+        return redirect()->intended($url);
     }
 
     public function AdminProfile()

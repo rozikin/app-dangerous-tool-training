@@ -1,14 +1,13 @@
 @extends('admin.admin_dashboard')
 
 @section('admin')
+    <div class="page-content">
 
-<div class="page-content">
-
-    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
-        <div>
-            <h4 class="mb-3 mb-md-0">Welcome to Dashboard</h4>
-        </div>
-        {{-- <div class="d-flex align-items-center flex-wrap text-nowrap">
+        <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+            <div>
+                <h4 class="mb-3 mb-md-0">Welcome </h4>
+            </div>
+            {{-- <div class="d-flex align-items-center flex-wrap text-nowrap">
             <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
                 <span class="input-group-text input-group-addon bg-transparent border-primary"
                     data-toggle><i data-feather="calendar" class="text-primary"></i></span>
@@ -24,384 +23,211 @@
                 Download Report
             </button>
         </div> --}}
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-xl-12 stretch-card">
+                <div class="area-datetime  align-items-center">
+                    <div class="time-now" id="timenow"></div>
+                    <div class="date-now" id="datenow"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-12 col-xl-12 stretch-card">
+                <div class="row flex-grow-1">
+                    <div class="col-md-3 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <h6 class="card-title mb-0">Employee Registred</h6>
+
+                                </div>
+                                <div class="row">
+                                    <h1 class="txt-count mb-2" id="txt-count-emp">0</h1>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <h6 class="card-title mb-0">IN </h6>
+
+                                </div>
+                                <div class="row">
+                                    <h1 class="txt-count mb-2" id="txt-count-in">0</h1>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <h6 class="card-title mb-0">OUT</h6>
+
+                                </div>
+                                <div class="row">
+                                    <h1 class="txt-count mb-2" id="txt-count-out">0</h1>
+
+                                    <div class="col-6 col-md-12 col-xl-7">
+                                        <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <h6 class="card-title mb-0">STAY</h6>
+
+                                </div>
+                                <div class="row">
+                                    <h1 class="txt-count mb-2" id="txt-count-stay">0</h1>
+
+                                    <div class="col-6 col-md-12 col-xl-7">
+                                        <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- row -->
+
+
+
+
+
     </div>
 
-    <div class="row">
-        <div class="col-12 col-xl-12 stretch-card">
-            <div class="row flex-grow-1">
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">New Customers</h6>
-                                <div class="dropdown mb-2">
-                                    <a type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-muted pb-3px"
-                                            data-feather="more-horizontal"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="eye"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">View</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="edit-2"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Edit</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="trash"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Delete</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="printer"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Print</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="download"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Download</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">3,897</h3>
-                                    <div class="d-flex align-items-baseline">
-                                        <p class="text-success">
-                                            <span>+3.3%</span>
-                                            <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-12 col-xl-7">
-                                    <div id="customersChart" class="mt-md-3 mt-xl-0"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">New Orders</h6>
-                                <div class="dropdown mb-2">
-                                    <a type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-muted pb-3px"
-                                            data-feather="more-horizontal"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="eye"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">View</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="edit-2"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Edit</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="trash"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Delete</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="printer"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Print</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="download"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Download</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">35,084</h3>
-                                    <div class="d-flex align-items-baseline">
-                                        <p class="text-danger">
-                                            <span>-2.8%</span>
-                                            <i data-feather="arrow-down" class="icon-sm mb-1"></i>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-12 col-xl-7">
-                                    <div id="ordersChart" class="mt-md-3 mt-xl-0"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">Growth</h6>
-                                <div class="dropdown mb-2">
-                                    <a type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-muted pb-3px"
-                                            data-feather="more-horizontal"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="eye"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">View</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="edit-2"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Edit</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="trash"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Delete</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="printer"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Print</span></a>
-                                        <a class="dropdown-item d-flex align-items-center"
-                                            href="javascript:;"><i data-feather="download"
-                                                class="icon-sm me-2"></i> <span
-                                                class="">Download</span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">89.87%</h3>
-                                    <div class="d-flex align-items-baseline">
-                                        <p class="text-success">
-                                            <span>+2.8%</span>
-                                            <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-12 col-xl-7">
-                                    <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> <!-- row -->
 
-   
-  
-    {{-- <div class="row">
-        <div class="col-lg-5 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-baseline mb-2">
-                        <h6 class="card-title mb-0">Inbox</h6>
-                        <div class="dropdown mb-2">
-                            <a type="button" id="dropdownMenuButton6" data-bs-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton6">
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="javascript:;"><i data-feather="eye"
-                                        class="icon-sm me-2"></i> <span class="">View</span></a>
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="javascript:;"><i data-feather="edit-2"
-                                        class="icon-sm me-2"></i> <span class="">Edit</span></a>
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="javascript:;"><i data-feather="trash"
-                                        class="icon-sm me-2"></i> <span class="">Delete</span></a>
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="javascript:;"><i data-feather="printer"
-                                        class="icon-sm me-2"></i> <span class="">Print</span></a>
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="javascript:;"><i data-feather="download"
-                                        class="icon-sm me-2"></i> <span
-                                        class="">Download</span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <a href="javascript:;" class="d-flex align-items-center border-bottom pb-3">
-                            <div class="me-3">
-                                <img src="https://via.placeholder.com/35x35"
-                                    class="rounded-circle wd-35" alt="user">
-                            </div>
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="text-body mb-2">Leonardo Payne</h6>
-                                    <p class="text-muted tx-12">12.30 PM</p>
-                                </div>
-                                <p class="text-muted tx-13">Hey! there I'm available...</p>
-                            </div>
-                        </a>
-                        <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-                            <div class="me-3">
-                                <img src="https://via.placeholder.com/35x35"
-                                    class="rounded-circle wd-35" alt="user">
-                            </div>
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="text-body mb-2">Carl Henson</h6>
-                                    <p class="text-muted tx-12">02.14 AM</p>
-                                </div>
-                                <p class="text-muted tx-13">I've finished it! See you so..</p>
-                            </div>
-                        </a>
-                        <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-                            <div class="me-3">
-                                <img src="https://via.placeholder.com/35x35"
-                                    class="rounded-circle wd-35" alt="user">
-                            </div>
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="text-body mb-2">Jensen Combs</h6>
-                                    <p class="text-muted tx-12">08.22 PM</p>
-                                </div>
-                                <p class="text-muted tx-13">This template is awesome!</p>
-                            </div>
-                        </a>
-                        <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-                            <div class="me-3">
-                                <img src="https://via.placeholder.com/35x35"
-                                    class="rounded-circle wd-35" alt="user">
-                            </div>
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="text-body mb-2">Amiah Burton</h6>
-                                    <p class="text-muted tx-12">05.49 AM</p>
-                                </div>
-                                <p class="text-muted tx-13">Nice to meet you</p>
-                            </div>
-                        </a>
-                        <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-                            <div class="me-3">
-                                <img src="https://via.placeholder.com/35x35"
-                                    class="rounded-circle wd-35" alt="user">
-                            </div>
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="text-body mb-2">Yaretzi Mayo</h6>
-                                    <p class="text-muted tx-12">01.19 AM</p>
-                                </div>
-                                <p class="text-muted tx-13">Hey! there I'm available...</p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-7 col-xl-8 stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-baseline mb-2">
-                        <h6 class="card-title mb-0">Projects</h6>
-                        <div class="dropdown mb-2">
-                            <a type="button" id="dropdownMenuButton7" data-bs-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="javascript:;"><i data-feather="eye"
-                                        class="icon-sm me-2"></i> <span class="">View</span></a>
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="javascript:;"><i data-feather="edit-2"
-                                        class="icon-sm me-2"></i> <span class="">Edit</span></a>
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="javascript:;"><i data-feather="trash"
-                                        class="icon-sm me-2"></i> <span class="">Delete</span></a>
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="javascript:;"><i data-feather="printer"
-                                        class="icon-sm me-2"></i> <span class="">Print</span></a>
-                                <a class="dropdown-item d-flex align-items-center"
-                                    href="javascript:;"><i data-feather="download"
-                                        class="icon-sm me-2"></i> <span
-                                        class="">Download</span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th class="pt-0">#</th>
-                                    <th class="pt-0">Project Name</th>
-                                    <th class="pt-0">Start Date</th>
-                                    <th class="pt-0">Due Date</th>
-                                    <th class="pt-0">Status</th>
-                                    <th class="pt-0">Assign</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>NobleUI jQuery</td>
-                                    <td>01/01/2022</td>
-                                    <td>26/04/2022</td>
-                                    <td><span class="badge bg-danger">Released</span></td>
-                                    <td>Leonardo Payne</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>NobleUI Angular</td>
-                                    <td>01/01/2022</td>
-                                    <td>26/04/2022</td>
-                                    <td><span class="badge bg-success">Review</span></td>
-                                    <td>Carl Henson</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>NobleUI ReactJs</td>
-                                    <td>01/05/2022</td>
-                                    <td>10/09/2022</td>
-                                    <td><span class="badge bg-info">Pending</span></td>
-                                    <td>Jensen Combs</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>NobleUI VueJs</td>
-                                    <td>01/01/2022</td>
-                                    <td>31/11/2022</td>
-                                    <td><span class="badge bg-warning">Work in Progress</span>
-                                    </td>
-                                    <td>Amiah Burton</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>NobleUI Laravel</td>
-                                    <td>01/01/2022</td>
-                                    <td>31/12/2022</td>
-                                    <td><span class="badge bg-danger">Coming soon</span></td>
-                                    <td>Yaretzi Mayo</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>NobleUI NodeJs</td>
-                                    <td>01/01/2022</td>
-                                    <td>31/12/2022</td>
-                                    <td><span class="badge bg-primary">Coming soon</span></td>
-                                    <td>Carl Henson</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-bottom">3</td>
-                                    <td class="border-bottom">NobleUI EmberJs</td>
-                                    <td class="border-bottom">01/05/2022</td>
-                                    <td class="border-bottom">10/11/2022</td>
-                                    <td class="border-bottom"><span class="badge bg-info">Pending</span>
-                                    </td>
-                                    <td class="border-bottom">Jensen Combs</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>  --}}
+    <script>
+        // A $( document ).ready() block.
+        $(document).ready(function() {
 
-</div>
+            get_employee();
+            get_in();
+            get_out();
+            get_stay();
 
-    
+        });
+
+
+
+        function get_employee() {
+
+            $.ajax({
+                url: "{{ route('get.employeecount') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
+                method: 'GET',
+                // headers: {
+                //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                //         'content') // Menggunakan token CSRF dari meta tag
+                // },
+                success: function(response) {
+                    // Update teks pada elemen h1 dengan id "employeeCount" dengan jumlah total karyawan
+                    $('#txt-count-emp').text(response.data.employee_count);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    $('#txt-count-emp').html('Error fetching employee count');
+                }
+            });
+        }
+
+        function get_in() {
+            $.ajax({
+                url: "{{ route('get.transactionin') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
+                method: 'GET',
+
+                success: function(response) {
+                    // 
+                    console.log(response.data.in);
+                    $('#txt-count-in').text(response.data.in);
+                },
+                error: function(xhr, status, error) {
+                    // console.error(xhr.responseText);
+                    console.log('eror');
+                    $('#txt-count-in').html('Error fetching employee count');
+                }
+            });
+        }
+
+
+        function get_out() {
+
+            $.ajax({
+                url: "{{ route('get.transactionout') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
+                method: 'GET',
+
+                success: function(response) {
+                    // Update teks pada elemen h1 dengan id "employeeCount" dengan jumlah total karyawan
+                    $('#txt-count-out').text(response.data.out);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    $('#txt-count-out').html('Error fetching data');
+                }
+            });
+        }
+
+        function get_stay() {
+
+            $.ajax({
+                url: "{{ route('get.transactionstay') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
+                method: 'GET',
+
+                success: function(response) {
+                    // Update teks pada elemen h1 dengan id "employeeCount" dengan jumlah total karyawan
+                    $('#txt-count-stay').text(response.data.stay);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    $('#txt-count-stay').html('Error fetching data');
+                }
+            });
+        }
+
+
+          //intital tanggal dan waktu dari id
+          var dateDisplay = document.getElementById("datenow");
+        var timeDisplay = document.getElementById("timenow");
+        //fungsi
+        function refreshTime() {
+            var dateString = new Date().toLocaleString("id-ID", {
+                imeZone: "Asia/Jakarta"
+            }); //gettime
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            var todayy = dd + '/' + mm + '/' + yyyy;
+            var formattedString = dateString.replace(",", "-");
+            dateDisplay.innerHTML = todayy; // date 
+
+            var splitarray = new Array();
+            splitarray = formattedString.split(" ");
+            var splitarraytime = new Array();
+            splitarraytime = splitarray[1].split(".");
+            timeDisplay.innerHTML = splitarraytime[0] + ':' + splitarraytime[1] + ':' +
+                splitarraytime[2]; // time 
+        }
+        //panggil ulang otomatis fungsi 
+        setInterval(refreshTime, 1000);
+    </script>
 @endsection

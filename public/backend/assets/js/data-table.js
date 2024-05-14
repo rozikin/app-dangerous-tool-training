@@ -17,7 +17,7 @@ $(function() {
 
   $(function() {
     var table = $('#dataTableExample').DataTable({
-      responsive: true
+      responsive: true,
       
       // columnDefs: [{ width: 200, targets: 4 }],
     // fixedColumns: true,

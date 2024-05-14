@@ -30,15 +30,6 @@ class ColorController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
 
-                    //     return '<div class="btn-group" role="group">
-                    //     <button id="btnGroupDrop1" type="button" class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    //    Action
-                    //     </button>
-                    //     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    //       <a class="dropdown-item editColor" href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'">Edit</a>
-                    //       <a class="dropdown-item deleteColor" href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'">Delete</a>
-                    //     </div>
-                    //   </div>';
 
                       return   '<div class="d-flex align-items-center justify-content-between flex-wrap">
                       <div class="d-flex align-items-center">
@@ -197,7 +188,6 @@ class ColorController extends Controller
     {
 
         $colors = Color::find($id);
-        // return view('backend.products.edit_product',compact('products'));
         return response()->json($colors);
     }
 

@@ -2,8 +2,9 @@
 <nav class="sidebar">
     <div class="sidebar-header">
         <a href="#" class="sidebar-brand">
-            E -<span> TIMW</span>
+            E -<span> NEEDLE</span>
         </a>
+       
         <div class="sidebar-toggler not-active">
             <span></span>
             <span></span>
@@ -19,38 +20,6 @@
                     <span class="link-title">Dashboard</span>
                 </a>
             </li>
-
-            {{-- <li class="nav-item nav-category">RealEstate</li>
-
-            @if (Auth::user()->can('type.menu'))
-            <li class="nav-item {{ request()->is('*/type') ? 'active' : '' }}">
-                <a class="nav-link" data-bs-toggle="collapse" href="#emailsw" role="button" aria-expanded="false"
-                    aria-controls="emailsx">
-                    <i class="link-icon" data-feather="mail"></i>
-                    <span class="link-title">Property Type</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
-                </a>
-                <div class="{{ request()->is('*/type') || request()->is('*/type/*') ? 'show' : 'collapse' }}"
-                    id="emailsw">
-                    <ul class="nav sub-menu">
-                        @if (Auth::user()->can('all.type'))
-                        <li class="nav-item">
-                            <a href="{{ route('all.type') }}"
-                                class="nav-link {{ request()->is('all/type')? 'active' : '' }}">All
-                                Type</a>
-                        </li>
-                        @endif
-                        @if (Auth::user()->can('add.type'))
-                        <li class="nav-item">
-                            <a href="{{ route('add.type') }}"
-                                class="nav-link {{ request()->is('add/type') ? 'active' : '' }}">Add Type</a>
-                        </li>
-                        @endif
-
-                    </ul>
-                </div>
-            </li>
-            @endif --}}
 
 
 
@@ -122,24 +91,24 @@
 
            
 
-            @if (Auth::user()->can('color.menu'))
-                <li class="nav-item {{ request()->is('*/color') ? 'active' : '' }}">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#emailsy" role="button" aria-expanded="false"
-                        aria-controls="emailsy">
-                        <i class="link-icon" data-feather="layers"></i>
-                        <span class="link-title">Color</span>
+            @if (Auth::user()->can('employee.menu'))
+                <li class="nav-item {{ request()->is('*/employee') ? 'active' : '' }}">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#emailsze" role="button"
+                        aria-expanded="false" aria-controls="emailsze">
+                        <i class="link-icon" data-feather="user"></i>
+                        <span class="link-title">Employee</span>
                         <i class="link-arrow" data-feather="chevron-down"></i>
                     </a>
-                    <div class="{{ request()->is('*/color') || request()->is('*/color/*') || request()->is('*/color') ? 'show' : 'collapse' }}"
-                        id="emailsy">
+                    <div class="{{ request()->is('*/employee') || request()->is('*/employee/*') || request()->is('*/employee') ? 'show' : 'collapse' }}"
+                        id="emailsze">
                         <ul class="nav sub-menu">
 
 
-                            @if (Auth::user()->can('all.color'))
+                            @if (Auth::user()->can('all.employee'))
                                 <li class="nav-item">
-                                    <a href="{{ route('all.color') }}"
-                                        class="nav-link {{ request()->is('all/color') || request()->is('edit/color/*') ? 'active' : '' }}">All
-                                        Color</a>
+                                    <a href="{{ route('all.employee') }}"
+                                        class="nav-link {{ request()->is('all/employee') || request()->is('edit/employee/*') ? 'active' : '' }}">All
+                                        Employee</a>
                                 </li>
                             @endif
 
@@ -148,156 +117,43 @@
                 </li>
             @endif
 
-            @if (Auth::user()->can('category.menu'))
-                <li class="nav-item {{ request()->is('*/category') ? 'active' : '' }}">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#emailsz" role="button"
-                        aria-expanded="false" aria-controls="emailsz">
-                        <i class="link-icon" data-feather="database"></i>
-                        <span class="link-title">Category</span>
-                        <i class="link-arrow" data-feather="chevron-down"></i>
-                    </a>
-                    <div class="{{ request()->is('*/category') || request()->is('*/category/*') || request()->is('*/category') ? 'show' : 'collapse' }}"
-                        id="emailsz">
-                        <ul class="nav sub-menu">
-
-
-                            @if (Auth::user()->can('all.category'))
-                                <li class="nav-item">
-                                    <a href="{{ route('all.category') }}"
-                                        class="nav-link {{ request()->is('all/category') || request()->is('edit/category/*') ? 'active' : '' }}">All
-                                        Category</a>
-                                </li>
-                            @endif
-
-                        </ul>
-                    </div>
-                </li>
-            @endif
-
-            @if (Auth::user()->can('product.menu'))
-            <li class="nav-item {{ request()->is('*/product') ? 'active' : '' }}">
-                <a class="nav-link" data-bs-toggle="collapse" href="#emailsx" role="button" aria-expanded="false"
-                    aria-controls="emailsx">
-                    <i class="link-icon" data-feather="server"></i>
-                    <span class="link-title">Product</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
-                </a>
-                <div class="{{ request()->is('*/product') || request()->is('*/product_allocation') || request()->is('*/product/*') || request()->is('*/product_allocation/*') ? 'show' : 'collapse' }}"
-                    id="emailsx">
-                    <ul class="nav sub-menu">
-                        @if (Auth::user()->can('all.product'))
-                            <li class="nav-item">
-                                <a href="{{ route('all.product') }}"
-                                    class="nav-link {{ request()->is('all/product') || request()->is('add/product') || request()->is('edit/product/*') ? 'active' : '' }}">Product</a>
-                            </li>
-                        @endif
-
-                        @if (Auth::user()->can('all.product_allocation'))
-                            <li class="nav-item">
-                                <a href="{{ route('all.product_allocation') }}"
-                                    class="nav-link {{ request()->is('all/product_allocation') || request()->is('edit/product_allocation/*') ? 'active' : '' }}">Product
-                                    Allocation</a>
-                            </li>
-                        @endif
-                    </ul>
-                </div>
-            </li>
-        @endif
+            
 
         
-        @if (Auth::user()->can('supplier.menu'))
-        <li class="nav-item {{ request()->is('*/supplier') ? 'active' : '' }}">
-            <a class="nav-link" data-bs-toggle="collapse" href="#emailsxs" role="button" aria-expanded="false"
-                aria-controls="emailsxs">
-                <i class="link-icon" data-feather="server"></i>
-                <span class="link-title">Supplier</span>
-                <i class="link-arrow" data-feather="chevron-down"></i>
-            </a>
-            <div class="{{ request()->is('*/supplier') || request()->is('*/supplier/*') ? 'show' : 'collapse' }}"
-                id="emailsxs">
-                <ul class="nav sub-menu">
-                    @if (Auth::user()->can('all.supplier'))
-                        <li class="nav-item">
-                            <a href="{{ route('all.supplier') }}"
-                                class="nav-link {{ request()->is('all/supplier') || request()->is('add/supplier') || request()->is('edit/product/*') ? 'active' : '' }}">All Supplier</a>
-                        </li>
-                    @endif
-                </ul>
-            </div>
-        </li>
-    @endif
-
             <li class="nav-item nav-category">Transaction</li>
             {{-- @if (Auth::user()->can('Transaction.menu')) --}}
-            <li class="nav-item {{ request()->is('*/productin') ? 'active' : '' }}">
-                <a class="nav-link" data-bs-toggle="collapse" href="#emailsyin" role="button" aria-expanded="false"
-                    aria-controls="emailsyin">
-                    <i class="link-icon" data-feather="corner-right-down"></i>
-                    <span class="link-title">IN</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
-                </a>
-                <div class="{{ request()->is('*/productin') || request()->is('*/productin/*') || request()->is('*/productin') ? 'show' : 'collapse' }}"
-                    id="emailsyin">
-                    <ul class="nav sub-menu">
-
-
-                        @if (Auth::user()->can('all.productin'))
-                            <li class="nav-item">
-                                <a href="{{route('all.productin')}}"
-                                    class="nav-link {{ request()->is('*/productin') || request()->is('*/productin/*') || request()->is('*/productin') ? 'active' : '' }}">All
-                                    Product In</a>
-                            </li>
-                        @endif
-
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item {{ request()->is('*/Transaction') ? 'active' : '' }}">
+          
+            <li class="nav-item {{ request()->is('*/transaction') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#emailsyout" role="button" aria-expanded="false"
                     aria-controls="emailsyout">
-                    <i class="link-icon" data-feather="corner-right-up"></i>
-                    <span class="link-title">OUT</span>
+                    <i class="link-icon" data-feather="check-circle"></i>
+                    <span class="link-title">Transaction</span>
                     <i class="link-arrow" data-feather="chevron-down"></i>
                 </a>
-                <div class="{{ request()->is('*/Transaction') || request()->is('*/Transaction/*') || request()->is('*/Transaction') ? 'show' : 'collapse' }}"
+                <div class="{{ request()->is('*/transaction') || request()->is('*/transaction/*') || request()->is('*/transaction') ? 'show' : 'collapse' }}"
                     id="emailsyout">
                     <ul class="nav sub-menu">
 
 
-                        {{-- @if (Auth::user()->can('all.Transaction')) --}}
+                        @if (Auth::user()->can('transaction.menu'))
                             <li class="nav-item">
-                                <a href="#"
-                                    class="nav-link {{ request()->is('all/Transaction') || request()->is('edit/Transaction/*') ? 'active' : '' }}">All
+                                <a href="{{ route('add.transaction') }}"
+                                    class="nav-link {{ request()->is('add/transaction') ? 'active' : '' }}">Add Trasaction</a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('transaction.menu'))
+                            <li class="nav-item">
+                                <a href="{{ route('all.transaction') }}"
+                                    class="nav-link {{ request()->is('all/transaction') ? 'active' : '' }}">All
                                     Transaction</a>
                             </li>
-                        {{-- @endif --}}
+                        @endif
 
                     </ul>
                 </div>
+              
             </li>
-            <li class="nav-item {{ request()->is('*/Transaction') ? 'active' : '' }}">
-                <a class="nav-link" data-bs-toggle="collapse" href="#emailsyr" role="button" aria-expanded="false"
-                    aria-controls="emailsyr">
-                    <i class="link-icon" data-feather="corner-up-left"></i>
-                    <span class="link-title">Return</span>
-                    <i class="link-arrow" data-feather="chevron-down"></i>
-                </a>
-                <div class="{{ request()->is('*/Transaction') || request()->is('*/Transaction/*') || request()->is('*/Transaction') ? 'show' : 'collapse' }}"
-                    id="emailsyr">
-                    <ul class="nav sub-menu">
-
-
-                        {{-- @if (Auth::user()->can('all.Transaction')) --}}
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="nav-link {{ request()->is('all/Transaction') || request()->is('edit/Transaction/*') ? 'active' : '' }}">All
-                                    Transaction</a>
-                            </li>
-                        {{-- @endif --}}
-
-                    </ul>
-                </div>
-            </li>
+           
         {{-- @endif --}}
 
 
