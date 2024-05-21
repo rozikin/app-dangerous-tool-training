@@ -45,7 +45,6 @@ class TransactionController extends Controller
     }
 
 
-
     public function GetTransactionIN()
     {
         // Hitung jumlah total karyawan
@@ -70,7 +69,7 @@ class TransactionController extends Controller
                     'in' => $inTodayCount
                 ]
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {   
             // Return an error response if an exception occurs
             return response()->json([
                 'success' => false,
@@ -137,70 +136,70 @@ class TransactionController extends Controller
     }
 
     public function storeTransaction(Request $request)
-{
-    $request->validate([
-        'employee_id' => 'required', // Validasi bahwa employee_id diharapkan dari request
-    ]);
-
-    // Membuat nomor transaksi
-    $lastTransaction = Transaction::latest()->first();
-    $nextId = $lastTransaction ? $lastTransaction->id + 1 : 1;
-    $noTrx = 'TRX-' . sprintf('%06d', $nextId);
-
-    if ($request->types == "IN" || $request->types == "in") {
-        // Periksa apakah sudah ada transaksi IN yang belum di-close dengan OUT untuk NIK yang sama
-        $existingTransaction = Transaction::where('nik', $request->employee_id)
-                                          ->where('remark', 'IN')
-                                        //   ->whereNull('type2') 
-                                          ->first();
-        if ($existingTransaction) {
-            // Jika ada, kirim response gagal untuk menghindari duplikasi
-            return response()->json([
-                'success' => false,
-                'message' => 'Status masih IN!',
-                'alert-type' => 'error'
-            ]);
-        }
-
-        // Jika tidak ada transaksi IN yang terbuka, buat transaksi baru
-        $transaction = Transaction::create([
-            'no_trx' => $noTrx,
-            'nik' => $request->employee_id,
-            'type1' => 'IN',
-            'type2' => '',
-            'remark' => 'IN'
+    {
+        $request->validate([
+            'employee_id' => 'required', // Validasi bahwa employee_id diharapkan dari request
         ]);
-    } elseif ($request->types == "OUT" || $request->types == "out") {
-        // Jika types adalah OUT, update transaksi terakhir dengan status IN dan NIK yang sama
-        $transaction = Transaction::where('nik', $request->employee_id)
-                                  ->where('remark', 'IN')
-                                  ->latest('id')
-                                  ->first();
 
-        if ($transaction) {
-            // Update transaksi yang ditemukan dengan OUT
-            $transaction->update([
-                'type2' => 'OUT',
-                'remark' => 'OUT'
+        // Membuat nomor transaksi
+        $lastTransaction = Transaction::latest()->first();
+        $nextId = $lastTransaction ? $lastTransaction->id + 1 : 1;
+        $noTrx = 'TRX-' . sprintf('%06d', $nextId);
+
+        if ($request->types == "IN" || $request->types == "in") {
+            // Periksa apakah sudah ada transaksi IN yang belum di-close dengan OUT untuk NIK yang sama
+            $existingTransaction = Transaction::where('nik', $request->employee_id)
+                                            ->where('remark', 'IN')
+                                            //   ->whereNull('type2') 
+                                            ->first();
+            if ($existingTransaction) {
+                // Jika ada, kirim response gagal untuk menghindari duplikasi
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Status masih IN!',
+                    'alert-type' => 'error'
+                ]);
+            }
+
+            // Jika tidak ada transaksi IN yang terbuka, buat transaksi baru
+            $transaction = Transaction::create([
+                'no_trx' => $noTrx,
+                'nik' => $request->employee_id,
+                'type1' => 'IN',
+                'type2' => '',
+                'remark' => 'IN'
             ]);
-        } else {
-            // Jika tidak ditemukan transaksi yang bisa diupdate, kirim error response
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak ada transaksi IN yang sesuai ditemukan untuk diupdate!',
-                'alert-type' => 'error'
-            ]);
+        } elseif ($request->types == "OUT" || $request->types == "out") {
+            // Jika types adalah OUT, update transaksi terakhir dengan status IN dan NIK yang sama
+            $transaction = Transaction::where('nik', $request->employee_id)
+                                    ->where('remark', 'IN')
+                                    ->latest('id')
+                                    ->first();
+
+            if ($transaction) {
+                // Update transaksi yang ditemukan dengan OUT
+                $transaction->update([
+                    'type2' => 'OUT',
+                    'remark' => 'OUT'
+                ]);
+            } else {
+                // Jika tidak ditemukan transaksi yang bisa diupdate, kirim error response
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tidak ada transaksi IN yang sesuai ditemukan untuk diupdate!',
+                    'alert-type' => 'error'
+                ]);
+            }
         }
-    }
 
-    // Kirim response sukses jika semua proses di atas berjalan tanpa error
-    return response()->json([
-        'success' => true,
-        'message' => 'Transaksi berhasil disimpan!',
-        'data' => $transaction,
-        'alert-type' => 'success'
-    ]);
-}
+        // Kirim response sukses jika semua proses di atas berjalan tanpa error
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaksi berhasil disimpan!',
+            'data' => $transaction,
+            'alert-type' => 'success'
+        ]);
+    }
 
     public function storeTransactionold1(Request $request)
 {

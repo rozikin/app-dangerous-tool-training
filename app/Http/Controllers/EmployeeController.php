@@ -69,6 +69,19 @@ class EmployeeController extends Controller
 
     }
 
+    public function GetPosisi(Request $request){
+
+        // $posisi= $request->input('posisi');
+
+          // Fetch employee positions for the specified department
+          $data = Employee::distinct()->pluck('posisi');
+
+          return response()->json($data);
+
+        
+
+    }
+
     public function CheckEmployee(Request $request)
 
     {
@@ -121,6 +134,7 @@ class EmployeeController extends Controller
                 'nik' => 'required|unique:employees|integer',
                 'name' => 'required',
                 'department' => 'required',
+                'posisi' => 'required',
     
             ]);
 
@@ -132,7 +146,8 @@ class EmployeeController extends Controller
                  ],[
                     'nik' => $request->nik,
                     'name' => $request->name,
-                    'department' => $request->department,
+                    'department' => $request->department, 
+                    'posisi' => $request->posisi,
         
                 ]);
         
@@ -152,6 +167,7 @@ class EmployeeController extends Controller
                 'nik' => 'required',
                 'name' => 'required',
                 'department' => 'required',
+                'posisi' => 'required',
     
             ]);
 
@@ -164,6 +180,7 @@ class EmployeeController extends Controller
                     'nik' => $request->nik,
                     'name' => $request->name,
                     'department' => $request->department,
+                    'posisi' => $request->posisi,
         
                 ]);
         
@@ -251,24 +268,44 @@ class EmployeeController extends Controller
 
 
 
-    public function exportPDF()
-{
-    $employees = Employee::all();
+    public function exportPDF(Request $request)
+    {
 
-    // $this->generateQrCodeUrls($employees);
+           // Validate the input
+           $request->validate([
+            'posisi' => 'required|string'
+        ]);
 
-    foreach ($employees as $employee) {
-        $qrCode = QrCode::size(100)->generate($employee->nik);
-        $employee->qr_code = $qrCode;
+         // Get the position from the request
+         $position = $request->input('posisi');
 
+         // Fetch employees with the specified position
+         $employees = Employee::where('posisi', $position)->get();
+
+
+
+        // $employees = Employee::all();
+
+        // $this->generateQrCodeUrls($employees);
+
+        foreach ($employees as $employee) {
+            $qrCode = QrCode::size(100)->generate($employee->nik);
+            $employee->qr_code = $qrCode;
+
+        }
+
+        // $pdf = PDF::loadView('backend.employee.pdf', compact('employees'));
+
+        // return $pdf->download('employee_report.pdf');
+
+
+
+        return view('backend.employee.pdf', compact('employees'));
     }
 
-    // $pdf = PDF::loadView('backend.employee.pdf', compact('employees'));
-
-    // return $pdf->download('employee_report.pdf');
-
-
-
-    return view('backend.employee.pdf', compact('employees'));
-}
+    public function PrintEmployee()
+    {
+     
+        return view('backend.employee.print');
+    }
 }

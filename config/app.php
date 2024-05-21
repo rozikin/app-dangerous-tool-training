@@ -176,6 +176,7 @@ return [
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class,
 
 
     ])->toArray(),

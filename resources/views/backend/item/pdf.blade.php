@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Employee Barcode</title>
+    <title>item Barcode</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
         }
 
-        .employee-card {
+        .item-card {
             border: 1px solid #dddddd;
             padding: 1px;
             margin-bottom: 20px;
@@ -32,7 +32,7 @@
             height: auto;
         }
 
-        .employee-details {
+        .item-details {
             margin-bottom: 10px;
             text-align: center;
             /* Membuat detail karyawan menjadi rata tengah */
@@ -76,16 +76,16 @@
 
 
     <div>
-        {{-- <h1>Employee Report</h1> --}}
-        @foreach ($employees as $key => $employee)
-            <div class="employee-card">
+        {{-- <h1>item Report</h1> --}}
+        @foreach ($items as $key => $item)
+            <div class="item-card">
                 <div class="qr-code">
-                    {!! $employee->qr_code !!}
+                    {!! $item->qr_code !!}
                 </div>
-                <div class="employee-details">
+                <div class="item-details">
 
-                    {{ $employee->nik }}<br>
-                    {{ strlen($employee->name) > 15 ? substr($employee->name, 0, 15) . '...' : $employee->name }}<br>
+                    {{ $item->code }}<br>
+                    {{ strlen($item->name) > 15 ? substr($item->name, 0, 15) . '...' : $item->name }}<br>
                 </div>
             </div>
         @endforeach

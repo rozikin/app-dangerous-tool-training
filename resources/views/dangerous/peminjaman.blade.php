@@ -12,7 +12,7 @@
     <meta name="keywords"
         content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
-    <title>E - NEEDLE</title>
+    <title>E - DANGROUS</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,10 +48,11 @@
 
 
 
+
     <style>
         /* style jam digital */
         .time-now {
-            font-size: 160px;
+            font-size: 60px;
             font-weight: bold;
             text-align: center;
             color: rgb(255, 230, 0);
@@ -60,7 +61,7 @@
         }
 
         .date-now {
-            font-size: 50px;
+            font-size: 30px;
             font-weight: 600;
             color: rgb(197, 197, 197);
             text-align: center;
@@ -79,8 +80,24 @@
             margin-top: 0px;
             padding: 0px;
             width: 100%;
-            height: 340px;
+            height: 150px;
             background-color: black;
+        }
+
+        /* .table-pinjam {
+            margin-top: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 290px;
+
+        } */
+
+        .area-input {
+            margin-top: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 130px;
+
         }
 
         .card {
@@ -130,98 +147,40 @@
                         <div class="area-datetime  align-items-center">
                             <div class="time-now" id="timenow"></div>
                             <div class="date-now" id="datenow"></div>
-                            <div class="menu-now">IN</div>
-
-
+                            <div class="menu-now">PEMINJAMAN</div>
                         </div>
-
                     </div>
-
                 </div>
 
-                <div class="row mt-2">
-                    <div class="col-12 col-xl-12 stretch-card">
-                        <div class="row flex-grow-1">
-                            <div class="col-md-3 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-baseline">
-                                            <h6 class="card-title mb-0">Employee Registred</h6>
-
-                                        </div>
-                                        <div class="row">
-                                            <h1 class="txt-count mb-2" id="txt-count-emp">0</h1>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-baseline">
-                                            <h6 class="card-title mb-0">IN </h6>
-
-                                        </div>
-                                        <div class="row">
-                                            <h1 class="txt-count mb-2" id="txt-count-in">0</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-baseline">
-                                            <h6 class="card-title mb-0">OUT</h6>
-
-                                        </div>
-                                        <div class="row">
-                                            <h1 class="txt-count mb-2" id="txt-count-out">0</h1>
-
-                                            <div class="col-6 col-md-12 col-xl-7">
-                                                <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-baseline">
-                                            <h6 class="card-title mb-0">STAY ON AREA</h6>
-
-                                        </div>
-                                        <div class="row">
-                                            <h1 class="txt-count mb-2" id="txt-count-stay">0</h1>
-
-                                            <div class="col-6 col-md-12 col-xl-7">
-                                                <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!-- row -->
-
-                <div class="row mt-0">
+                <div class="row px-6 area-input">
                     <form id="TransactionForm" name="TransactionForm">
                         <div class="alert alert-danger print-error-msg" style="display:none">
                             <ul></ul>
                         </div>
 
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-6">
                                 <p class="txt-counts" id="txt-name">-</p>
+
+                                <input type="text" class="form-control hidden-input" id="remark" name="remark">
 
                                 <input type="text" class="form-control" id="nik" name="nik"
                                     placeholder="NIK" autofocus required>
 
                                 <input type="text" class="form-control hidden-input" id="employee_id"
                                     name="employee_id" required>
+
+
+                            </div>
+
+                            <div class="col-6">
+                                <p class="txt-counts" id="txt-name-item">-</p>
+
+                                <input type="text" class="form-control" id="sku" name="sku"
+                                    placeholder="SKU" autofocus required>
+
+                                <input type="text" class="form-control hidden-input" id="item_id" name="item_id"
+                                    required>
 
                             </div>
 
@@ -232,6 +191,30 @@
 
 
                 </div>
+
+                <div class="row py-2 px-6 table-pinjam">
+
+                    <table id="dataTableExamplex" class="table bg-white">
+                        <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>NO TRX</th>
+                                <th>DATE</th>
+                                <th>EMP ID</th>
+                                <th>EMP NAME</th>
+                                <th>DEPT.</th>
+                                <th>SKU</th>
+                                <th>NAME</th>
+                                <th>REMARK</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-table-body">
+
+                        </tbody>
+                    </table>
+                </div>
+
+
             </div>
         </div>
 
@@ -248,63 +231,12 @@
 
 
 
-            // get_employee();
-            // get_in();
-            // get_out();
-            // get_stay();
+            $('#remark').val('PINJAM');
+            fetchTransactions();
+
             clear_input();
 
-
-
-            // Inisialisasi variabel untuk menyimpan data terakhir yang diterima
-            var lastEmployeeCount = null;
-            var lastInCount = null;
-            var lastOutCount = null;
-            var lastStayCount = null;
-
-            // Fungsi untuk memeriksa dan memperbarui data jika ada perubahan
-            function updateDataIfChanged() {
-                get_employee(function(employeeCount) {
-                    if (employeeCount !== lastEmployeeCount) {
-                        $('#txt-count-emp').text(employeeCount);
-                        lastEmployeeCount = employeeCount;
-                    }
-                });
-                get_in(function(inCount) {
-                    if (inCount !== lastInCount) {
-                        $('#txt-count-in').text(inCount);
-                        lastInCount = inCount;
-                    }
-                });
-                get_out(function(outCount) {
-                    if (outCount !== lastOutCount) {
-                        $('#txt-count-out').text(outCount);
-                        lastOutCount = outCount;
-                    }
-                });
-                get_stay(function(stayCount) {
-                    if (stayCount !== lastStayCount) {
-                        $('#txt-count-stay').text(stayCount);
-                        lastStayCount = stayCount;
-                    }
-                });
-            }
-
-            // Set interval untuk memeriksa pembaruan data setiap 10 detik
-            setInterval(updateDataIfChanged, 10000);
-
-            // Inisialisasi pertama kali
-            updateDataIfChanged();
-
-
-
-
-
-
-            if ($("#txt-name").text() === '-') {
-                $("#types").prop('disabled', true); // Nonaktifkan input types
-            }
-
+            $("#sku").prop('disabled', true);
 
 
             $("#nik").on('keyup', function(e) {
@@ -325,17 +257,15 @@
                                 $("#employee_id").val(response.id);
                                 var truncatedName = response.name.substring(0, 15);
                                 $("#txt-name").html(truncatedName);
+                                $('#sku').prop('disabled', false); // Enable SKU field
+                                $('#sku').focus();
 
-
-
-                                // Simpan transaksi dengan tipe "IN"
-                                saveTransaction(response.id, "IN");
 
                             } else {
                                 const Toast = Swal.mixin({
 
                                     showConfirmButton: false,
-                                    timer: 3000,
+                                    timer: 1000,
                                     timerProgressBar: true,
                                 });
 
@@ -345,6 +275,9 @@
                                 })
 
                                 $('#nik').val('');
+                                $('#sku').val('');
+                                $('#txt-name').html('-');
+                                $('#sku').prop('disabled', true); // Keep SKU field disabled
                             }
                         }
 
@@ -352,26 +285,76 @@
                 }
             });
 
+            $("#sku").on('keyup', function(e) {
+                if (e.keyCode === 13) {
+                    var sku = $(this).val();
+                    $.ajax({
+                        url: "{{ route('check.item') }}", // URL endpoint to check SKU
+                        method: "POST",
+                        data: {
+                            sku: sku,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.id) {
+                                $("#item_id").val(response.id);
+                                var truncatedItemName = response.name.substring(0, 15);
+                                $("#txt-name-item").html(truncatedItemName);
+
+
+                                saveTransaction();
+                                clear_input();
+                            } else {
+                                const Toast = Swal.mixin({
+
+                                    showConfirmButton: false,
+                                    timer: 1000,
+                                    timerProgressBar: true,
+                                });
+
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'SKU tidak ditemukan!'
+                                })
+
+                                $('#sku').val('');
+                                $('#txt-name-item').text('-');
+                            }
+                        }
+                    });
+                }
+            });
+
+
+
+
         });
 
         function clear_input() {
             $('#nik').val('');
             $('#employee_id').val('');
+            $('#sku').val('');
             $('#txt-name').text('-');
+            $('#txt-name-item').text('-');
+            $('#sku').prop('disabled', true); // Disable SKU field
+
         }
 
-        function clear_txt() {
-            $('#txt-name').html('-');
-        }
 
 
-        function saveTransaction(employeeId, types) {
+        function saveTransaction() {
+
+            var employee_id = $("#employee_id").val();
+            var item_id = $("#item_id").val();
+            var remark = $("#remark").val();
+
             $.ajax({
-                url: "{{ route('store.transaction') }}",
+                url: "{{ route('store.peminjaman') }}",
                 method: "POST",
                 data: {
-                    employee_id: employeeId,
-                    types: types,
+                    employee_id: employee_id,
+                    item_id: item_id,
+                    remark: remark,
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
@@ -381,27 +364,32 @@
                             title: 'Transaksi berhasil disimpan!',
 
                             showConfirmButton: false,
-                            timer: 3000,
+                            timer: 1000,
                             timerProgressBar: true,
                         });
 
                         // Perbarui jumlah IN
-                        get_in();
-                        get_out()
-                        get_stay();
-                        get_employee();
+
+                        fetchTransactions();
                         clear_input();
+                        $('#nik').focus();
+
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Already IN!',
+                            title: 'Sudah Dipinjam!',
 
                             showConfirmButton: false,
-                            timer: 3000,
+                            timer: 1000,
                             timerProgressBar: true,
                         });
 
                         clear_input();
+                        $('#nik').focus();
+
+
+
+
                     }
                 },
                 error: function(xhr, status, error) {
@@ -410,88 +398,71 @@
                         title: 'Terjadi kesalahan!',
 
                         showConfirmButton: false,
-                        timer: 3000,
+                        timer: 1000,
                         timerProgressBar: true,
                     });
                 }
             });
         }
 
-
-
-
-
-        function get_employee(callback) {
-
-            $.ajax({
-                url: "{{ route('get.employeecount') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
-                method: 'GET',
-                // headers: {
-                //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                //         'content') // Menggunakan token CSRF dari meta tag
-                // },
-                success: function(response) {
-                    // Update teks pada elemen h1 dengan id "employeeCount" dengan jumlah total karyawan
-                    $('#txt-count-emp').text(response.data.employee_count);
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    $('#txt-count-emp').html('Error fetching employee count');
-                }
-            });
-        }
-
-        function get_in(callback) {
-            $.ajax({
-                url: "{{ route('get.transactionin') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
-                method: 'GET',
-
-                success: function(response) {
-                    // 
-                    console.log(response.data.in);
-                    $('#txt-count-in').text(response.data.in);
-                },
-                error: function(xhr, status, error) {
-                    // console.error(xhr.responseText);
-                    console.log('eror');
-                    $('#txt-count-in').html('Error fetching employee count');
-                }
-            });
+        function formatDateTime(dateTimeString) {
+            const date = new Date(dateTimeString);
+            const options = {
+                timeZone: 'Asia/Jakarta'
+            };
+            return date.toLocaleDateString('id-ID', options) + ' ' + date.toLocaleTimeString('id-ID', options).replace(
+                '.000000Z', '');
         }
 
 
-        function get_out(callback) {
 
+        function fetchTransactions() {
             $.ajax({
-                url: "{{ route('get.transactionout') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
-                method: 'GET',
-
+                url: "{{ route('get.peminjamanlimit') }}",
+                method: "GET",
                 success: function(response) {
-                    // Update teks pada elemen h1 dengan id "employeeCount" dengan jumlah total karyawan
-                    $('#txt-count-out').text(response.data.out);
+                    var tbody = $('#transaction-table-body');
+                    tbody.empty();
+                    response.forEach(function(transaction, index) {
+
+                        const createdAt = formatDateTime(transaction.created_at);
+                        const updatedAt = transaction.updated_at !== transaction.created_at ?
+                            formatDateTime(transaction.updated_at) : '';
+
+                            
+                        var row = `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${transaction.no_trx_out}</td>
+                                    <td>${createdAt}</td>
+                                    <td>${transaction.employee.nik}</td>
+                                    <td>${transaction.employee.name}</td>
+                                    <td>${transaction.employee.department}</td>
+                                    <td>${transaction.item.code}</td>
+                                    <td>${transaction.item.name}</td>
+                                    <td>
+                                        ${transaction.remark 
+                                            ? (transaction.remark === 'KEMBALI' 
+                                                ? `<span class="badge bg-success">${transaction.remark}</span>` 
+                                                : `<span class="badge bg-danger">${transaction.remark}</span>`)
+                                            : ''}
+                                    </td>
+                                </tr>
+                            `;
+                        tbody.append(row);
+                    });
                 },
                 error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    $('#txt-count-out').html('Error fetching data');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi kesalahan saat memuat data transaksi!',
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                    });
                 }
             });
-        }
 
-        function get_stay(callback) {
-
-            $.ajax({
-                url: "{{ route('get.transactionstay') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
-                method: 'GET',
-
-                success: function(response) {
-                    // Update teks pada elemen h1 dengan id "employeeCount" dengan jumlah total karyawan
-                    $('#txt-count-stay').text(response.data.stay);
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    $('#txt-count-stay').html('Error fetching data');
-                }
-            });
         }
 
 

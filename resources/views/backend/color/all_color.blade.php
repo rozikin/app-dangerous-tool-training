@@ -175,6 +175,7 @@
 
             $('#btn-create-color').click(function() {
 
+                $('#saveBtn').html("save");
                 $(this).find('form').trigger('reset');
                 $('#colorForm').find(".print-error-msg").find("ul").find("li").remove();
                 $('#colorForm').find(".print-error-msg").css('display', 'none');

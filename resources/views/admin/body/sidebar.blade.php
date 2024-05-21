@@ -2,7 +2,7 @@
 <nav class="sidebar">
     <div class="sidebar-header">
         <a href="#" class="sidebar-brand">
-            E -<span> NEEDLE</span>
+            APP -<span> INV</span>
         </a>
        
         <div class="sidebar-toggler not-active">
@@ -89,7 +89,31 @@
 
             <li class="nav-item nav-category">Master</li>
 
-           
+            @if (Auth::user()->can('category.menu'))
+            <li class="nav-item {{ request()->is('*/category') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#emailszeo" role="button"
+                    aria-expanded="false" aria-controls="emailsze">
+                    <i class="link-icon" data-feather="box"></i>
+                    <span class="link-title">Category</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="{{ request()->is('*/category') || request()->is('*/category/*') || request()->is('*/category') ? 'show' : 'collapse' }}"
+                    id="emailszeo">
+                    <ul class="nav sub-menu">
+
+
+                        @if (Auth::user()->can('all.category'))
+                            <li class="nav-item">
+                                <a href="{{ route('all.category') }}"
+                                    class="nav-link {{ request()->is('all/category') || request()->is('edit/category/*') ? 'active' : '' }}">All
+                                    Category</a>
+                            </li>
+                        @endif
+
+                    </ul>
+                </div>
+            </li>
+        @endif
 
             @if (Auth::user()->can('employee.menu'))
                 <li class="nav-item {{ request()->is('*/employee') ? 'active' : '' }}">
@@ -116,6 +140,33 @@
                     </div>
                 </li>
             @endif
+
+
+            @if (Auth::user()->can('item.menu'))
+            <li class="nav-item {{ request()->is('*/item') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#emailszec" role="button"
+                    aria-expanded="false" aria-controls="emailsze">
+                    <i class="link-icon" data-feather="book"></i>
+                    <span class="link-title">Item</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="{{ request()->is('*/item') || request()->is('*/item/*') || request()->is('*/item') ? 'show' : 'collapse' }}"
+                    id="emailszec">
+                    <ul class="nav sub-menu">
+
+
+                        @if (Auth::user()->can('all.item'))
+                            <li class="nav-item">
+                                <a href="{{ route('all.item') }}"
+                                    class="nav-link {{ request()->is('all/item') || request()->is('edit/item/*') ? 'active' : '' }}">All
+                                    Item</a>
+                            </li>
+                        @endif
+
+                    </ul>
+                </div>
+            </li>
+        @endif
 
             
 
@@ -152,6 +203,44 @@
                                 <a href="{{ route('all.transaction') }}"
                                     class="nav-link {{ request()->is('all/transaction') ? 'active' : '' }}">All
                                     Transaction</a>
+                            </li>
+                        @endif
+
+                    </ul>
+                </div>
+              
+            </li>
+
+
+            <li class="nav-item {{ request()->is('*/peminjaman') || request()->is('*/peminjaman')  ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#emailsyout1" role="button" aria-expanded="false"
+                    aria-controls="emailsyout1">
+                    <i class="link-icon" data-feather="check-circle"></i>
+                    <span class="link-title">Dangerous Tool</span>
+                    <i class="link-arrow" data-feather="chevron-down"></i>
+                </a>
+                <div class="{{ request()->is('*/peminjaman') || request()->is('*/peminjaman/*') || request()->is('*/peminjaman') ? 'show' : 'collapse' }}"
+                    id="emailsyout1">
+                    <ul class="nav sub-menu">
+
+
+                        @if (Auth::user()->can('peminjaman.menu'))
+                            <li class="nav-item">
+                                <a href="{{ route('add.peminjaman') }}"
+                                    class="nav-link {{ request()->is('add/peminjaman') ? 'active' : '' }}">Peminjaman</a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('peminjaman.menu'))
+                            <li class="nav-item">
+                                <a href="{{ route('add.peminjamanrt') }}"
+                                    class="nav-link {{ request()->is('add/peminjamanrt') ? 'active' : '' }}">Pengembalian</a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('peminjaman.menu'))
+                            <li class="nav-item">
+                                <a href="{{ route('all.peminjaman') }}"
+                                    class="nav-link {{ request()->is('all/peminjaman') ? 'active' : '' }}">All
+                                    peminjaman</a>
                             </li>
                         @endif
 

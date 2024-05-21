@@ -9,9 +9,13 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\ColorController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Exports\PeminjamanExport;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,18 +29,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 */
 
 
-// Route::get('/oke', function () {
-//     return ('hello');
-// });
-
-
-
-// Route::middleware('guest')->group(function () {
-//     Route::get('/oke', function () {
-//         return 'cek';
-//     });
-// });
-
+require __DIR__ . '/auth.php';
 
 Route::get('/login', function () {
 
@@ -51,11 +44,6 @@ Route::get('/login', function () {
     }
     return view('admin.admin_login');
 });
-
-
-
-
-
 
 
 Route::get('/admin/login', [AdminController::class, 'store'])->name('admin.login');
@@ -74,11 +62,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:agent'])->group(function () {
     Route::get('/agent/dashboard', [AgentController::class, 'AgentDashboard'])->name('agent.dashboard');
 });
-
-
-
-require __DIR__ . '/auth.php';
-
 
 
 
@@ -126,7 +109,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/delete/admin/{id}', 'DeleteAdmin')->name('delete.admin')->middleware('can:delete.admin');
     });
 
-
     
 
       //color User All Color
@@ -143,8 +125,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/export/color', 'ExportColor')->name('export.color');
     });
 
-     
+    Route::controller(CategoryController::class)->group(function () {
+        Route::get('/all/category', 'Allcategory')->name('all.category')->middleware('can:all.category');
+        Route::get('/get/category', 'Getcategory')->name('get.category')->middleware('can:get.category');
+        Route::get('/get/categoryglobal', 'GetCategoryGlobal')->name('get.categoryglobal');
+        Route::get('/add/category', 'Addcategory')->name('add.category')->middleware('can:add.category');
+      
+        Route::post('/store/category', 'Storecategory')->name('store.category');
+        Route::get('/edit/category/{id}', 'Editcategory')->name('edit.category')->middleware('can:edit.category');
+        Route::post('/update/category/{id}', 'Updatecategory')->name('update.category');
+        Route::get('/delete/category/{id}', 'Deletecategory')->name('delete.category');
+        Route::get('/export/category', 'Exportcategory')->name('export.category');
+    });
 
+
+     
 
     Route::controller(EmployeeController::class)->group(function () {
         Route::get('/all/employee', 'AllEmployee')->name('all.employee')->middleware('can:all.employee');
@@ -156,12 +151,43 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/export/employee', 'ExportEmployee')->name('export.employee');
         Route::get('/get/employee', 'Getemployee')->name('get.employee')->middleware('can:all.employee');
         Route::get('/get/employeecount', 'GetEmployeeCount')->name('get.employeecount');
+        Route::get('/get/posisiemployee', 'GetPosisi')->name('get.posisiemployee');
         Route::post('/check/employee', 'CheckEmployee')->name('check.employee');
-        Route::get('/pdf/employee', 'exportPDF')->name('pdf.employee');
+        Route::get('/print/employee', 'PrintEmployee')->name('print.employee');
+        Route::post('/pdf/employee', 'exportPDF')->name('pdf.employee');
         Route::post('/import/employee', 'ImportEmployee')->name('import.employee');
         Route::get('/import/employees', 'Importemployees')->name('import.employees');
       
     });
+
+
+
+    
+    Route::controller(ItemController::class)->group(function () {
+        Route::get('/all/item', 'Allitem')->name('all.item')->middleware('can:all.item');
+        Route::get('/add/item', 'Additem')->name('add.item')->middleware('can:add.item');
+        Route::post('/store/item', 'Storeitem')->name('store.item');
+        Route::get('/edit/item/{id}', 'Edititem')->name('edit.item')->middleware('can:edit.item');
+        Route::post('/update/item/{id}', 'Updateitem')->name('update.item');
+        Route::get('/delete/item/{id}', 'DeleteItem')->name('delete.item');
+        Route::get('/export/item', 'Exportitem')->name('export.item');
+        Route::get('/get/item', 'Getitem')->name('get.item')->middleware('can:all.item');
+        Route::get('/get/itemcount', 'GetitemCount')->name('get.itemcount');
+        Route::get('/get/posisi', 'GetPosisi')->name('get.posisi');
+        Route::post('/check/item', 'Checkitem')->name('check.item');
+        Route::get('/print/item', 'Printitem')->name('print.item');
+        Route::post('/pdf/item', 'exportPDF')->name('pdf.item');
+        Route::post('/import/item', 'Importitem')->name('import.item');
+        Route::get('/import/items', 'Importitems')->name('import.items');
+      
+    });
+
+
+
+
+
+
+
 
     Route::controller(TransactionController::class)->group(function () {
        
@@ -182,27 +208,34 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     });
 
 
+    
+    Route::controller(PeminjamanController::class)->group(function () {
+       
+        Route::get('/all/peminjaman', 'Allpeminjaman')->name('all.peminjaman')->middleware('can:all.peminjaman');
+        Route::get('/get/peminjaman', 'getpeminjaman')->name('get.peminjaman');
+        Route::get('/get/peminjamanoke', 'getpeminjamanoke')->name('get.peminjamanoke');
+        Route::get('/add/peminjaman', 'Addpeminjaman')->name('add.peminjaman')->middleware('can:add.peminjaman');
+        Route::get('/add/peminjamanrt', 'Addpeminjamanrt')->name('add.peminjamanrt')->middleware('can:add.peminjaman');
+        Route::post('/store/peminjaman', 'StorePeminjaman')->name('store.peminjaman');
+        Route::get('/edit/peminjaman/{id}', 'Editpeminjaman')->name('edit.peminjaman')->middleware('can:edit.peminjaman');
+        Route::post('/update/peminjaman/{id}', 'Updatepeminjaman')->name('update.peminjaman');
+        Route::get('/delete/peminjaman/{id}', 'Deletepeminjaman')->name('delete.peminjaman');               
+        Route::get('/export/peminjaman', 'export')->name('export.peminjaman');
+        Route::get('/get/peminjamanlimit', 'Getpeminjamanlimit')->name('get.peminjamanlimit')->middleware('can:all.peminjaman');
+        Route::get('/get/peminjamanin', 'GetpeminjamanIN')->name('get.peminjamanin');
+        Route::get('/get/peminjamanrt', 'Getpeminjamanrt')->name('get.peminjamanrt');
+        Route::get('/get/peminjamanstay', 'GetpeminjamanSTAY')->name('get.peminjamanstay');
+        Route::get('/pdf/peminjaman', 'exportPdf')->name('pdf.peminjaman');
+      
+    });
+
+    
+   
+
+
 
 }); 
 
 //end admin middleware
 
-
-
-// Route::get('/', function () {
-//    return 'hello';
-// });
-
-
-
-// Route::get('/dashboard', function () {
-//     return view('admin.dashboard');
-// });
-
-// Route::middleware('auth')->group(function () {
-  
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
 

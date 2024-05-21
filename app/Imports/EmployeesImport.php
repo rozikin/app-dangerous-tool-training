@@ -14,7 +14,8 @@ class EmployeesImport implements ToModel, WithValidation,WithHeadingRow
         return new Employee([
             'nik' => $row['nik'],
             'name' => $row['name'],
-            'department' => $row['department']
+            'department' => $row['department'],
+            'posisi' => $row['posisi']
         ]);
     }
 
@@ -25,6 +26,7 @@ class EmployeesImport implements ToModel, WithValidation,WithHeadingRow
             'nik' => ['required','unique:employees' ],
             'name' => [ 'required'],
             'department' => [ 'required'],
+            'posisi' => [ 'required'],
            
         ];
     }

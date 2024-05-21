@@ -7,22 +7,7 @@
             <div>
                 <h4 class="mb-3 mb-md-0">Welcome </h4>
             </div>
-            {{-- <div class="d-flex align-items-center flex-wrap text-nowrap">
-            <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
-                <span class="input-group-text input-group-addon bg-transparent border-primary"
-                    data-toggle><i data-feather="calendar" class="text-primary"></i></span>
-                <input type="text" class="form-control bg-transparent border-primary"
-                    placeholder="Select date" data-input>
-            </div>
-            <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
-                <i class="btn-icon-prepend" data-feather="printer"></i>
-                Print
-            </button>
-            <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-                <i class="btn-icon-prepend" data-feather="download-cloud"></i>
-                Download Report
-            </button>
-        </div> --}}
+          
         </div>
 
         <div class="row">
@@ -115,16 +100,51 @@
         // A $( document ).ready() block.
         $(document).ready(function() {
 
-            get_employee();
-            get_in();
-            get_out();
-            get_stay();
+              // Inisialisasi variabel untuk menyimpan data terakhir yang diterima
+              var lastEmployeeCount = null;
+            var lastInCount = null;
+            var lastOutCount = null;
+            var lastStayCount = null;
+
+            // Fungsi untuk memeriksa dan memperbarui data jika ada perubahan
+            function updateDataIfChanged() {
+                get_employee(function(employeeCount) {
+                    if (employeeCount !== lastEmployeeCount) {
+                        $('#txt-count-emp').text(employeeCount);
+                        lastEmployeeCount = employeeCount;
+                    }
+                });
+                get_in(function(inCount) {
+                    if (inCount !== lastInCount) {
+                        $('#txt-count-in').text(inCount);
+                        lastInCount = inCount;
+                    }
+                });
+                get_out(function(outCount) {
+                    if (outCount !== lastOutCount) {
+                        $('#txt-count-out').text(outCount);
+                        lastOutCount = outCount;
+                    }
+                });
+                get_stay(function(stayCount) {
+                    if (stayCount !== lastStayCount) {
+                        $('#txt-count-stay').text(stayCount);
+                        lastStayCount = stayCount;
+                    }
+                });
+            }
+
+            // Set interval untuk memeriksa pembaruan data setiap 10 detik
+            setInterval(updateDataIfChanged, 10000);
+
+            // Inisialisasi pertama kali
+            updateDataIfChanged();
 
         });
 
 
 
-        function get_employee() {
+        function get_employee(callback) {
 
             $.ajax({
                 url: "{{ route('get.employeecount') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
@@ -144,7 +164,7 @@
             });
         }
 
-        function get_in() {
+        function get_in(callback) {
             $.ajax({
                 url: "{{ route('get.transactionin') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
                 method: 'GET',
@@ -163,7 +183,7 @@
         }
 
 
-        function get_out() {
+        function get_out(callback) {
 
             $.ajax({
                 url: "{{ route('get.transactionout') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
@@ -180,7 +200,7 @@
             });
         }
 
-        function get_stay() {
+        function get_stay(callback) {
 
             $.ajax({
                 url: "{{ route('get.transactionstay') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan

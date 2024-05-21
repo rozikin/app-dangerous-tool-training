@@ -106,6 +106,7 @@
             text-align: center;
             color: rgb(255, 17, 17);
         }
+
         .hidden-input {
             display: none;
         }
@@ -219,8 +220,8 @@
                                 <input type="text" class="form-control" id="nik" name="nik"
                                     placeholder="NIK" autofocus required>
 
-                                <input type="text" class="form-control hidden-input" id="employee_id" name="employee_id"
-                                     required>
+                                <input type="text" class="form-control hidden-input" id="employee_id"
+                                    name="employee_id" required>
 
                             </div>
 
@@ -247,12 +248,60 @@
 
 
 
-            get_employee();
-            get_in();
-            get_out();
-            get_stay();
+            // get_employee();
+            // get_in();
+            // get_out();
+            // get_stay();
 
             clear_input();
+
+            // // Set interval for automatic updates every 10 seconds
+            // setInterval(function() {
+            //     get_employee();
+            //     get_in();
+            //     get_out();
+            //     get_stay();
+            // }, 60000); // 10000 milliseconds = 10 seconds
+
+            // Inisialisasi variabel untuk menyimpan data terakhir yang diterima
+            var lastEmployeeCount = null;
+            var lastInCount = null;
+            var lastOutCount = null;
+            var lastStayCount = null;
+
+            // Fungsi untuk memeriksa dan memperbarui data jika ada perubahan
+            function updateDataIfChanged() {
+                get_employee(function(employeeCount) {
+                    if (employeeCount !== lastEmployeeCount) {
+                        $('#txt-count-emp').text(employeeCount);
+                        lastEmployeeCount = employeeCount;
+                    }
+                });
+                get_in(function(inCount) {
+                    if (inCount !== lastInCount) {
+                        $('#txt-count-in').text(inCount);
+                        lastInCount = inCount;
+                    }
+                });
+                get_out(function(outCount) {
+                    if (outCount !== lastOutCount) {
+                        $('#txt-count-out').text(outCount);
+                        lastOutCount = outCount;
+                    }
+                });
+                get_stay(function(stayCount) {
+                    if (stayCount !== lastStayCount) {
+                        $('#txt-count-stay').text(stayCount);
+                        lastStayCount = stayCount;
+                    }
+                });
+            }
+
+            // Set interval untuk memeriksa pembaruan data setiap 10 detik
+            setInterval(updateDataIfChanged, 10000);
+
+            // Inisialisasi pertama kali
+            updateDataIfChanged();
 
 
 
@@ -280,7 +329,7 @@
                                 $("#employee_id").val(response.id);
                                 var truncatedName = response.name.substring(0, 15);
                                 $("#txt-name").html(truncatedName);
-                            
+
 
 
                                 // Simpan transaksi dengan tipe "IN"
@@ -288,7 +337,7 @@
 
                             } else {
                                 const Toast = Swal.mixin({
-                                  
+
                                     showConfirmButton: false,
                                     timer: 3000,
                                     timerProgressBar: true,
@@ -334,8 +383,8 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Transaksi berhasil disimpan!',
-                       
-                        
+
+
                             showConfirmButton: false,
                             timer: 3000,
                             timerProgressBar: true,
@@ -351,7 +400,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Already OUT!',
-                     
+
                             showConfirmButton: false,
                             timer: 3000,
                             timerProgressBar: true,
@@ -364,7 +413,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Terjadi kesalahan!',
-                     
+
                         showConfirmButton: false,
                         timer: 3000,
                         timerProgressBar: true,
@@ -373,11 +422,11 @@
             });
         }
 
-    
 
 
 
-        function get_employee() {
+
+        function get_employee(callback) {
 
             $.ajax({
                 url: "{{ route('get.employeecount') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
@@ -397,7 +446,7 @@
             });
         }
 
-        function get_in() {
+        function get_in(callback) {
             $.ajax({
                 url: "{{ route('get.transactionin') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
                 method: 'GET',
@@ -416,7 +465,7 @@
         }
 
 
-        function get_out() {
+        function get_out(callback) {
 
             $.ajax({
                 url: "{{ route('get.transactionout') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
@@ -433,7 +482,7 @@
             });
         }
 
-        function get_stay() {
+        function get_stay(callback) {
 
             $.ajax({
                 url: "{{ route('get.transactionstay') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
@@ -449,6 +498,8 @@
                 }
             });
         }
+
+
 
         function openFullscreen() {
             var elem = document.documentElement;

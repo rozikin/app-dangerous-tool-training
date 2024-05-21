@@ -12,7 +12,7 @@
     <meta name="keywords"
         content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
-    <title>E - NEEDLE</title>
+    <title>APP - INV</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
     <!-- End fonts -->
 
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/assets/vendors/datatables.net-bs5/buttons.bootstrap5.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('backend/assets/vendors/datatables.net-bs5/buttons.bootstrap5.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/core/core.css') }}">
 
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/flatpickr/flatpickr.min.css') }}">
@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="{{ asset('backend/assets/fonts/feather-font/css/iconfont.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/sweetalert2/sweetalert2.min.css') }}">
+
+  
 
 
     <!-- Layout styles -->
@@ -40,6 +42,12 @@
 
 
     <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.png') }}" />
+
+
+  
+      <!-- DataTables Buttons CSS -->
+      <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
 
 
 
@@ -64,11 +72,19 @@
     {{-- <script src="{{ asset('js/sweatalert.js') }}"></script> --}}
 
 
+
     <script src="{{ asset('backend/assets/js/code.js') }}"></script>
 
     <script src="{{ asset('js/sweetalert2/sweetalert2.min.js') }}"></script>
 
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
 
+    
 
 
 
@@ -124,8 +140,6 @@
         // goFS.addEventListener("click", function() {
         //     document.body.requestFullscreen();
         // }, false);
-
-
     </script>
 
 

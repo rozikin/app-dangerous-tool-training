@@ -12,54 +12,39 @@
 
                         <div>
                             <div class="row">
-                              
+
 
                                 <div class="col">
-                                    <h6 class="card-title text-center">employee All</h6>
+                                    <h6 class="card-title text-center">Item All</h6>
                                 </div>
-                              
+
                             </div>
 
                         </div>
 
                         <div class="row">
                             <div class="col">
-                                {{-- <nav class="page-breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <a href="javascript:void(0)" class="btn btn-sm btn-primary mx-1"
-                                            id="btn-create-employee"><i class="feather-16" data-feather="file-plus"></i>
-                                            &nbsp;Add</a>
-                                        <a href="{{ route('print.employee') }}" class="btn btn-sm btn-danger mx-1"
-                                            ><i class="feather-16" data-feather="printer"></i>
-                                            &nbsp;Print</a>
-                                        <a href="{{ route('import.employees') }}" class="btn btn-sm btn-success mx-1"
-                                            ><i class="feather-16" data-feather="file-plus"></i>
-                                            &nbsp;Import</a>
-
-                                    </ol>   
-                                </nav> --}}
-
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a href="javascript:void(0)" class="btn btn-primary" id="btn-create-employee"><i class="feather-10" data-feather="plus"></i>  &nbsp;Add</a>
-                                    <a href="{{ route('print.employee') }}" class="btn btn-primary"><i class="feather-10" data-feather="printer"></i>  &nbsp;Print</a>  
-                                    <a href="{{ route('import.employees') }}"  class="btn btn-primary"><i class="feather-10" data-feather="upload"></i>  &nbsp;Import</a>
-                                    <a href="{{ route('export.employee') }}"  class="btn btn-primary"><i class="feather-10" data-feather="download"></i>  &nbsp;Export</a>
+                                    <a href="javascript:void(0)" class="btn btn-primary" id="btn-create-item"><i class="feather-10" data-feather="plus"></i>  &nbsp;Add</a>
+                                    <a href="{{ route('print.item') }}" class="btn btn-primary"><i class="feather-10" data-feather="printer"></i>  &nbsp;Print</a>  
+                                    <a href="{{ route('import.items') }}"  class="btn btn-primary"><i class="feather-10" data-feather="upload"></i>  &nbsp;Import</a>
+                                    <a href="{{ route('export.item') }}"  class="btn btn-primary"><i class="feather-10" data-feather="download"></i>  &nbsp;Export</a>
                                   </div>
                             </div>
                         </div>
 
 
-                        <div class="table-responsive">
+                        <div class="table-responsive">  
 
-                            <table id="employeeTable" class="table table-sm">
+                            <table id="itemTable" class="table table-sm">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>NIK</th>
+                                        <th>SKU</th>
                                         <th>Name</th>
-                                        <th>Department</th>
                                         <th>Posisi</th>
-                                        {{-- <th>QR</th> --}}
+                                        <th>Category</th>
+                                        <th>Unit</th>
                                         <th>Action</th>
 
                                     </tr>
@@ -93,7 +78,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <form id="employeeForm" name="employeeForm">
+                    <form id="itemForm" name="itemForm">
 
                         <div class="alert alert-danger print-error-msg" style="display:none">
 
@@ -101,19 +86,15 @@
 
                         </div>
 
-                        <input type="hidden" name="employee_id" id="employee_id">
+                        <input type="hidden" name="item_id" id="item_id">
                         <div class="mb-3">
-                            <label for="nik" class="form-label">NIK:</label>
-                            <input type="text" class="form-control" id="nik" name="nik" autofocus>
+                            <label for="code" class="form-label">code:</label>
+                            <input type="text" class="form-control" id="code" name="code" autofocus>
 
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">Name:</label>
                             <input type="text" class="form-control" id="name" name="name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="department" class="form-label">Department:</label>
-                            <input type="text" class="form-control" id="department" name="department">
                         </div>
 
                         <div class="mb-3">
@@ -122,9 +103,21 @@
                         </div>
 
 
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select id="category" name="category" class="js-example-basic-single form-select" style="width: 100%">
+                                {{-- <option value="TX">Texas</option>
+                                <option value="NY">New York</option>
+                                <option value="FL">Florida</option>
+                                <option value="KN">Kansas</option>
+                                <option value="HW">Hawaii</option> --}}
 
-
-
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="unit" class="form-label">Unit:</label>
+                            <input type="text" class="form-control" id="unit" name="unit">
+                        </div>
 
                     </form>
 
@@ -161,37 +154,37 @@
 
 
 
-            var table = $('#employeeTable').DataTable({
+            var table = $('#itemTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('get.employee') }}",
+                ajax: "{{ route('get.item') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
 
                     },
                     {
-                        data: 'nik',
-                        name: 'nik'
+                        data: 'code',
+                        name: 'code'
                     },
                     {
                         data: 'name',
                         name: 'name'
                     },
                     {
-                        data: 'department',
-                        name: 'department'
-                    },
-                    {
                         data: 'posisi',
                         name: 'posisi'
                     },
+                    {
+                        data: 'category',
+                        name: 'category'
+                    },
 
 
-                    // {
-                    //     data: 'qr_code',
-                    //     name: 'qr_code'
-                    // },
+                    {
+                        data: 'unit',
+                        name: 'unit'
+                    },
 
                     {
                         data: 'action',
@@ -199,8 +192,7 @@
                         orderable: true,
                         searchable: true
                     },
-                ],
-                
+                ]
             });
 
 
@@ -216,19 +208,19 @@
 
             --------------------------------------------*/
 
-            $('#btn-create-employee').click(function() {
+            $('#btn-create-item').click(function() {
 
                 $('#saveBtn').html("save");
                 $(this).find('form').trigger('reset');
-                $('#employeeForm').find(".print-error-msg").find("ul").find("li").remove();
-                $('#employeeForm').find(".print-error-msg").css('display', 'none');
+                $('#itemForm').find(".print-error-msg").find("ul").find("li").remove();
+                $('#itemForm').find(".print-error-msg").css('display', 'none');
 
-                $('#saveBtn').val("create-employee");
-                $('#employeeForm').trigger("reset");
-                $('#exampleModalLabel').html("Create New employee");
-                $('#employee_id').val('');
+                $('#saveBtn').val("create-item");
+                $('#itemForm').trigger("reset");
+                $('#exampleModalLabel').html("Create New item");
+                $('#item_id').val('');
                 $('#modal-create').modal('show');
-                $('#nik').attr("readonly", false)
+                $('#code').attr("readonly", false)
                 $(this).find('[autofocus]').focus();
 
             });
@@ -254,9 +246,9 @@
 
                 $.ajax({
 
-                    data: $('#employeeForm').serialize(),
+                    data: $('#itemForm').serialize(),
 
-                    url: "{{ route('store.employee') }}",
+                    url: "{{ route('store.item') }}",
 
                     type: "POST",
 
@@ -264,7 +256,7 @@
 
                     success: function(data) {
 
-                        $('#employeeForm').trigger("reset");
+                        $('#itemForm').trigger("reset");
                         $('#modal-create').modal('hide');
                         table.ajax.reload(null, false);
                         $('#saveBtn').html('SIMPAN');
@@ -285,10 +277,10 @@
 
                     error: function(data) {
 
-                        $('#employeeForm').find(".print-error-msg").find("ul").html('');
-                        $('#employeeForm').find(".print-error-msg").css('display', 'block');
+                        $('#itemForm').find(".print-error-msg").find("ul").html('');
+                        $('#itemForm').find(".print-error-msg").css('display', 'block');
                         $.each(data.responseJSON.errors, function(key, value) {
-                            $('#employeeForm').find(".print-error-msg").find("ul")
+                            $('#itemForm').find(".print-error-msg").find("ul")
                                 .append(
                                     '<li>' + value + '</li>');
                         });
@@ -315,26 +307,30 @@
             --------------------------------------------*/
 
 
-            $('body').on('click', '.editEmployee', function() {
+            $('body').on('click', '.editItem', function() {
 
-                var employee_id = $(this).data('id');
-                console.log(employee_id);
+                var item_id = $(this).data('id');
+                console.log(item_id);
 
 
-                $.get("/edit/employee/" + employee_id, function(
+                $.get("/edit/item/" + item_id, function(
                     data) {
-                    $('#exampleModalLabel').html("Edit employee");
+                    $('#exampleModalLabel').html("Edit item");
                     $('#saveBtn').html("edit");
                     $('#modal-create').modal('show');
-                    $('#employee_id').val(data.id);
-                    $('#nik').val(data.nik);
+                    $('#item_id').val(data.id);
+                    $('#code').val(data.code);
                     $('#name').val(data.name);
-                    $('#department').val(data.department);
+                    $('#category').val(data.category);
+                    $('#posisi').val(data.posisi);
+                    $('#unit').val(data.unit);
 
-                    $('#nik').attr("readonly", true)
+                    // $('#category').val(data.category_id).trigger('change');
 
-                    $('#employeeForm').find(".print-error-msg").find("ul").find("li").remove();
-                    $('#employeeForm').find(".print-error-msg").css('display', 'none');
+                    $('#code').attr("readonly", true)
+
+                    $('#itemForm').find(".print-error-msg").find("ul").find("li").remove();
+                    $('#itemForm').find(".print-error-msg").css('display', 'none');
 
                 })
 
@@ -351,11 +347,11 @@
             --------------------------------------------*/
 
 
-            $('body').on('click', '.deleteEmployee', function() {
+            $('body').on('click', '.deleteItem', function() {
 
 
 
-                var employee_id = $(this).data("id");
+                var item_id = $(this).data("id");
 
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
@@ -378,7 +374,7 @@
 
                         $.ajax({
                             type: "GET",
-                            url: "/delete/employee/" + employee_id,
+                            url: "/delete/item/" + item_id,
                             success: function(data) {
                                 table.ajax.reload(null, false);
 
@@ -435,6 +431,26 @@
 
 
 
+        });
+
+
+        $(document).ready(function() {
+            // Fetch categories and update the dropdown
+            $.ajax({
+                url: "{{ route('get.categoryglobal') }}",
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var select = $('#category');
+                    select.empty(); // Clear existing options
+                    data.forEach(function(category) {
+                        select.append($('<option>', {
+                            value: category.name,
+                            text: category.name
+                        }));
+                    });
+                }
+            });
         });
     </script>
 @endsection

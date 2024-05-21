@@ -12,25 +12,27 @@
 
                     <div>
                         <div class="row">
-                            <div class="col-5">
-                                <nav class="page-breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <a href="{{ route('add.permission') }}" class="btn btn-sm btn-primary mx-1"><i class="feather-16" data-feather="file-plus"></i> &nbsp; Add Permission</a>
-                                        <a href="{{ route('import.permission') }}" class="btn btn-sm btn-secondary mx-1"><i class="feather-16" data-feather="file-text"></i> &nbsp;Import</a>
-                                        <a href="{{ route('export') }}" class="btn btn-sm btn-success"><i class="feather-16" data-feather="file-minus"></i> &nbsp;Export</a>
-                                    </ol>
-                                </nav>
-                            </div>
+                           
 
-                            <div class="col-2">
+                            <div class="col">
                                 <h6 class="card-title text-center">Permission All</h6>
 
                             </div>
-                            <div class="col-5">
-                                <h6 class="card-title text-center"></h6>
-                            </div>
+                           
                         </div>
                        
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-5">
+                            <nav class="page-breadcrumb">
+                                <ol class="breadcrumb">
+                                    <a href="{{ route('add.permission') }}" class="btn btn-sm btn-primary mx-1"><i class="feather-16" data-feather="file-plus"></i> &nbsp; Add</a>
+                                    <a href="{{ route('import.permission') }}" class="btn btn-sm btn-secondary mx-1"><i class="feather-16" data-feather="file-text"></i> &nbsp;Import</a>
+                                    <a href="{{ route('export') }}" class="btn btn-sm btn-success"><i class="feather-16" data-feather="file-minus"></i> &nbsp;Export</a>
+                                </ol>
+                            </nav>
+                        </div>
                     </div>
                    
 
