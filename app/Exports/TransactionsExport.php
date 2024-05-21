@@ -45,6 +45,9 @@ class TransactionsExport implements FromQuery, WithHeadings, WithMapping
 
     public function map($transaction): array
     {
+
+        $updatedAt = ($transaction->updated_at->equalTo($transaction->created_at)) ? '' : $transaction->updated_at;
+
         return [
             $transaction->id,
             $transaction->no_trx,
@@ -54,7 +57,7 @@ class TransactionsExport implements FromQuery, WithHeadings, WithMapping
             $transaction->type1,
             $transaction->created_at,
             $transaction->type2,
-            $transaction->updated_at,
+            $updatedAt,
             $transaction->remark,
            
         ];

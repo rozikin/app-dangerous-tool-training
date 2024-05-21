@@ -24,6 +24,9 @@ class TransactionController extends Controller
     public function Addtransaction(){
         return view('transaction.add_transaction');
     }
+    public function Addtransactionout(){
+        return view('transaction.add_transactionout');
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -144,7 +147,7 @@ class TransactionController extends Controller
     $nextId = $lastTransaction ? $lastTransaction->id + 1 : 1;
     $noTrx = 'TRX-' . sprintf('%06d', $nextId);
 
-    if ($request->types == "IN") {
+    if ($request->types == "IN" || $request->types == "in") {
         // Periksa apakah sudah ada transaksi IN yang belum di-close dengan OUT untuk NIK yang sama
         $existingTransaction = Transaction::where('nik', $request->employee_id)
                                           ->where('remark', 'IN')
@@ -167,7 +170,7 @@ class TransactionController extends Controller
             'type2' => '',
             'remark' => 'IN'
         ]);
-    } elseif ($request->types == "OUT") {
+    } elseif ($request->types == "OUT" || $request->types == "out") {
         // Jika types adalah OUT, update transaksi terakhir dengan status IN dan NIK yang sama
         $transaction = Transaction::where('nik', $request->employee_id)
                                   ->where('remark', 'IN')

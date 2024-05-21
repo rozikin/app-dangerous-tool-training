@@ -62,7 +62,7 @@
                                 <div class="col-md-8 ps-md-0">
                                     <div class="auth-form-wrapper px-4 py-5">
                                         <a href="#" class="noble-ui-logo logo-light d-block mb-2">E<span>
-                                                NEEDLES</span></a>
+                                                NEEDLE</span></a>
                                         <h5 class="text-muted fw-normal mb-4">Welcome back! Log in to your account.</h5>
                                         <form class="forms-sample" method="POST" action="{{ route('login') }}">
                                             @csrf
@@ -79,12 +79,7 @@
                                                     placeholder="Password">
                                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                             </div>
-                                            <div class="form-check mb-3">
-                                                <input type="checkbox" class="form-check-input" id="authCheck">
-                                                <label class="form-check-label" for="authCheck">
-                                                    Remember me
-                                                </label>
-                                            </div>
+                                           
                                             <div>
                                                 {{-- <a href="../../dashboard.html" class="btn btn-primary me-2 mb-2 mb-md-0 text-white">Login</a> --}}
                                                 <button type="submit"
@@ -93,8 +88,8 @@
                                                     Login
                                                 </button>
                                             </div>
-                                            <a href="register.html" class="d-block mt-3 text-muted">Not a user? Sign
-                                                up</a>
+                                            {{-- <a href="register.html" class="d-block mt-3 text-muted">Not a user? Sign
+                                                up</a> --}}
                                         </form>
                                     </div>
                                 </div>

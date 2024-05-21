@@ -106,7 +106,6 @@
             text-align: center;
             color: rgb(255, 17, 17);
         }
-
         .hidden-input {
             display: none;
         }
@@ -130,7 +129,7 @@
                         <div class="area-datetime  align-items-center">
                             <div class="time-now" id="timenow"></div>
                             <div class="date-now" id="datenow"></div>
-                            <div class="menu-now">IN</div>
+                            <div class="menu-now">OUT</div>
 
 
                         </div>
@@ -220,8 +219,8 @@
                                 <input type="text" class="form-control" id="nik" name="nik"
                                     placeholder="NIK" autofocus required>
 
-                                <input type="text" class="form-control hidden-input" id="employee_id"
-                                    name="employee_id" required>
+                                <input type="text" class="form-control hidden-input" id="employee_id" name="employee_id"
+                                     required>
 
                             </div>
 
@@ -281,15 +280,15 @@
                                 $("#employee_id").val(response.id);
                                 var truncatedName = response.name.substring(0, 15);
                                 $("#txt-name").html(truncatedName);
-
+                            
 
 
                                 // Simpan transaksi dengan tipe "IN"
-                                saveTransaction(response.id, "IN");
+                                saveTransaction(response.id, "OUT");
 
                             } else {
                                 const Toast = Swal.mixin({
-                                 
+                                  
                                     showConfirmButton: false,
                                     timer: 3000,
                                     timerProgressBar: true,
@@ -335,7 +334,8 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Transaksi berhasil disimpan!',
-                          
+                       
+                        
                             showConfirmButton: false,
                             timer: 3000,
                             timerProgressBar: true,
@@ -350,8 +350,8 @@
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Already IN!',
-                         
+                            title: 'Already OUT!',
+                     
                             showConfirmButton: false,
                             timer: 3000,
                             timerProgressBar: true,
@@ -373,7 +373,7 @@
             });
         }
 
-
+    
 
 
 

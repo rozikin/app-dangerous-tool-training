@@ -72,7 +72,7 @@
                                             <td>{{ $item->type1 }}</td>
                                             <td>{{ $item->created_at }}</td>
                                             <td>{{ $item->type2 }}</td>
-                                            <td>{{ $item->updated_at }}</td>
+                                            <td>{{ $item->updated_at != $item->created_at ? $item->updated_at : '' }}</td>
 
                                             <td>{{ $item->remark }}</td>
                                             <td>

@@ -24,22 +24,45 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 |
 */
 
-// Route::middleware(['auth'])->get('/', function () {
-//     return view('welcome');
 
+// Route::get('/oke', function () {
+//     return ('hello');
 // });
 
 
 
-require __DIR__ . '/auth.php';
+// Route::middleware('guest')->group(function () {
+//     Route::get('/oke', function () {
+//         return 'cek';
+//     });
+// });
 
-// Route::get('/', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+
+Route::get('/login', function () {
+
+    if (auth()->check()) {
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif (auth()->user()->role === 'agent') {
+            return redirect()->route('agent.dashboard');
+        } elseif (auth()->user()->role === 'user') {
+            return redirect()->route('user.dashboard');
+        }
+    }
+    return view('admin.admin_login');
+});
 
 
-Route::get('/admin/login', [AdminController::class, 'AdminLogin'])->name('admin.login');
+
+
+
+
+
+Route::get('/admin/login', [AdminController::class, 'store'])->name('admin.login');
 
 //admin group middleware
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    // Route::get('/', [AdminController::class, 'AdminDashboard'])->name('admin.login');
     Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
     Route::get('/admin/logout', [AdminController::class, 'AdminLogout'])->name('admin.logout');
     Route::get('/admin/profile', [AdminController::class, 'AdminProfile'])->name('admin.profile');
@@ -51,6 +74,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:agent'])->group(function () {
     Route::get('/agent/dashboard', [AgentController::class, 'AgentDashboard'])->name('agent.dashboard');
 });
+
+
+
+require __DIR__ . '/auth.php';
 
 
 
@@ -140,6 +167,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
        
         Route::get('/all/transaction', 'Alltransaction')->name('all.transaction')->middleware('can:all.transaction');
         Route::get('/add/transaction', 'Addtransaction')->name('add.transaction')->middleware('can:add.transaction');
+        Route::get('/add/transactionout', 'Addtransactionout')->name('add.transactionout')->middleware('can:add.transactionout');
         Route::post('/store/transaction', 'Storetransaction')->name('store.transaction');
         Route::get('/edit/transaction/{id}', 'Edittransaction')->name('edit.transaction')->middleware('can:edit.transaction');
         Route::post('/update/transaction/{id}', 'Updatetransaction')->name('update.transaction');
@@ -155,7 +183,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
 
-}); //end admin middleware
+}); 
+
+//end admin middleware
 
 
 
@@ -163,9 +193,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 //    return 'hello';
 // });
 
-// Route::get('/login', function () {
-//     return view('admin.admin_login');
-// });
+
 
 // Route::get('/dashboard', function () {
 //     return view('admin.dashboard');

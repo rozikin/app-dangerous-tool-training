@@ -17,13 +17,14 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
+
+
  
     Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login');
 
-    
+
     Route::get('/',function(){
         if (auth()->check()) {
-            // Jika sudah, arahkan ke halaman dashboard atau halaman yang sesuai
             if (auth()->user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             } elseif (auth()->user()->role === 'agent') {
@@ -33,7 +34,6 @@ Route::middleware('guest')->group(function () {
             }
         }
         
-        // Jika belum terautentikasi, arahkan ke halaman login
         return view('admin.admin_login');
     });
 

@@ -39,6 +39,8 @@ class AuthenticatedSessionController extends Controller
         }
 
         return redirect()->intended($url);
+
+        // return ('hello');
     }
 
     /**
@@ -55,3 +57,4 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
 }
+

@@ -138,7 +138,13 @@
                         @if (Auth::user()->can('transaction.menu'))
                             <li class="nav-item">
                                 <a href="{{ route('add.transaction') }}"
-                                    class="nav-link {{ request()->is('add/transaction') ? 'active' : '' }}">Add Trasaction</a>
+                                    class="nav-link {{ request()->is('add/transaction') ? 'active' : '' }}">Add Trasaction IN</a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->can('transaction.menu'))
+                            <li class="nav-item">
+                                <a href="{{ route('add.transactionout') }}"
+                                    class="nav-link {{ request()->is('add/transactionout') ? 'active' : '' }}">Add Trasaction OUT</a>
                             </li>
                         @endif
                         @if (Auth::user()->can('transaction.menu'))
