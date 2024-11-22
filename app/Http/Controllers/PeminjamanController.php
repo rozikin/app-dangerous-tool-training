@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
 use App\Models\Item;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Maatwebsite\Excel\Facades\Excel;
 use DataTables;
 use App\Exports\PeminjamanExport;
+use App\Events\PeminjamanUpdated;
+use App\Events\CategoryUpdated;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Broadcast;
 
 
 class PeminjamanController extends Controller
@@ -21,9 +27,27 @@ class PeminjamanController extends Controller
         //
     }
 
+    // public function updateTotalPeminjaman()
+    // {
+    //     $today = Carbon::today();
+    //     $totalPeminjaman = Peminjaman::whereDate('created_at', $today)
+    //         ->where('remark', 'PINJAM')
+    //         ->count();
+
+
+    //     Cache::forever('total_peminjaman', $totalPeminjaman);
+
+    //     // PeminjamanUpdated::dispatch($totalPeminjaman);
+
+
+    //     // Broadcast event untuk memberi tahu perubahan total peminjaman
+    //     event(new PeminjamanUpdated($totalPeminjaman));
+    // }
+
 
     public function Allpeminjaman(Request $request)
     {   
+
 
         return view('dangerous.all_transaction');
     } 
@@ -38,6 +62,19 @@ class PeminjamanController extends Controller
             return Datatables::of($data)
       
                     ->addIndexColumn()
+                    ->addColumn('remark', function($row) {
+                        $remark = $row->remark;
+                        $class = $remark == 'PINJAM' ? 'badge bg-danger' : 'badge bg-success';
+                        return '<span class="'.$class.'">'.$remark.'</span>';
+                    })
+           		   ->addColumn('updated_at', function($row) {      
+                        // Menggunakan operator ternary untuk memeriksa apakah updated_at sama dengan created_at
+
+                       $up = $row->updated_at;
+                       $cr = $row->created_at ;
+                       $res = $up != $cr ? $up : '';
+                        return $res;
+                    })   
                     ->addColumn('action', function($row) {
                         return   '<div class="d-flex align-items-center justify-content-between flex-wrap">
                         <div class="d-flex align-items-center">
@@ -48,12 +85,9 @@ class PeminjamanController extends Controller
                                     <div class="dropdown-menu" role="menu">
                                       
                                     
+       
                                             <a href="javascript:void(0)"
-                                                class="dropdown-item editItem" data-id="'.$row->id.'"> &nbsp; Edit</a>
-                                     
-                            
-                                            <a href="javascript:void(0)"
-                                                class="dropdown-item text-danger deleteItem"
+                                                class="dropdown-item text-danger deletePeminjaman"
                                              data-id="'.$row->id.'"> &nbsp; Delete</a>
                                      
   
@@ -63,14 +97,16 @@ class PeminjamanController extends Controller
                         </div>
                     </div>';
                     })
-                    ->rawColumns(['action'])
+                    ->rawColumns(['remark','action'])
                     ->make(true);
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     public function GetPeminjamanlimit(){
+     $today = Carbon::today();
         $transactions = Peminjaman::with('employee', 'item')
+           ->whereDate('created_at', $today)
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
@@ -78,10 +114,160 @@ class PeminjamanController extends Controller
         return response()->json($transactions);
     }
 
+    public function GetPeminjamanrtlimit(){
+     $today = Carbon::today();
+        $transactions = Peminjaman::with('employee', 'item')
+           ->whereDate('created_at', $today)
+            ->orderBy('updated_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        return response()->json($transactions);
+    }
+
+
+    
+
+
+    public function getpeminjaman_today(){
+        
+           // Ambil tanggal hari ini
+           $today = Carbon::today();
+        
+           // Tanggal kemarin
+           $yesterday = Carbon::yesterday();
+   
+           // Menghitung jumlah peminjaman pada hari ini dengan remark 'pinjam' untuk setiap kategori
+           // Hitung jumlah total karyawan
+           $itemCount = Item::count();
+   
+           // Menghitung jumlah peminjaman hari ini untuk karyawan yang meminjam
+           // Hitung jumlah unik karyawan yang meminjam barang pada hari ini berdasarkan nama
+            $employeeCount = Peminjaman::whereDate('created_at', $today)
+                                                ->where('remark', 'PINJAM')
+                                                ->distinct('employee_id')
+                                                ->count('employee_id');
+   
+           // Menghitung total peminjaman hari ini
+           $peminjamanCount = Peminjaman::whereDate('created_at', $today)
+                                         ->where('remark', 'PINJAM')
+                                         ->count();
+   
+           // Menghitung jumlah barang yang masih dipinjam hari ini
+           $itemOutCount = Item::where('status', 1)
+                                      ->count();
+
+            // Simpan semua nilai dalam satu array
+            $cacheData = [
+                'ITEM' => $itemCount,
+                'EMPLOYEE_BORROW' => $employeeCount,
+                'PEMINJAMAN' => $peminjamanCount,
+                'ITEM_OUT' => $itemOutCount
+            ];
+
+
+         // Simpan array sebagai nilai untuk satu kunci dalam cache
+           Cache::forever('peminjaman_today_data', $cacheData);
+
+           event(new PeminjamanUpdated($itemCount, $employeeCount, $peminjamanCount, $itemOutCount));
+   
+           // Return the counts as a JSON response
+           return response()->json([
+               'success' => true,
+               'message' => 'Counts retrieved successfully',
+               'data' => [
+                   'ITEM' => $itemCount,
+                   'EMPLOYEE_BORROW' => $employeeCount,
+                   'PEMINJAMAN' => $peminjamanCount,
+                   'ITEM_OUT' => $itemOutCount
+               ]
+           ]);
+
+    }
+  
+   
+
+    public function GetPeminjamanHariIni()
+
+    {
+        // Ambil tanggal hari ini
+        $today = Carbon::today();
+
+        // Tanggal kemarin
+        $yesterday = Carbon::yesterday();
+    
+        // Kategori yang akan dihitung secara spesifik
+        $specificCategories = ['SEW%', '%QC%', 'PACK%', 'CUT%', 'MEK%', 'SPL%', 'WH%', 'FOLD%', 'PRINT%', 'IRON%'];
+        $categories = [
+            'SEW' => 'SEW%',
+            'QC' => '%QC%',
+            'PACK' => 'PACK%',
+            'CUTT' => 'CUT%',
+            'MEK' => 'MEK%',
+            'SPL' => 'SPL%',
+            'WH' => 'WH%',
+            'FOLD' => 'FOLD%',
+            'PRINT' => 'PRINT%',
+            'IRON' => 'IRON%'
+        ];
+        $counts = [];
+    
+        foreach ($categories as $key => $pattern) {
+            $counts[$key] = Peminjaman::with(['employee', 'item'])
+                                        ->whereDate('created_at', $today)
+                                        ->where('remark', 'PINJAM')
+                                        ->whereHas('item', function($query) use ($pattern) {
+                                            $query->where('code', 'like', $pattern);
+                                        })
+                                        ->count();
+        }
+    
+          // Hitung jumlah kategori 'OTHER'
+        $counts['OTHER'] = Peminjaman::with(['employee', 'item'])
+                                    ->whereDate('created_at', $today)
+                                    ->where('remark', 'PINJAM')
+                                    ->whereHas('item', function($query) use ($specificCategories) {
+                                        $query->where(function($query) use ($specificCategories) {
+                                            foreach ($specificCategories as $patternx) {
+                                                $query->wherenot('code', 'like', $patternx );
+                                            }
+                                        });
+                                    })
+                                    ->count();
+
+         // Hitung jumlah peminjaman yang belum dikembalikan hari ini dan yang masih dipinjam kemarin
+         $counts['NOT_RETURN'] = Peminjaman::where(function($query) use ($today, $yesterday) {
+                                            $query->whereDate('created_at','<=', $yesterday)
+                                             ->where('remark', 'PINJAM')
+                                                ->where('no_trx_return','');
+                                            })
+                                           
+                                            ->count();
+
+
+        Cache::forever('category', $counts);
+
+        event(new CategoryUpdated($counts));
+    
+        // Return the counts as a JSON response
+        return response()->json([
+            'success' => true,
+            'message' => 'Counts retrieved successfully',
+            'data' => $counts
+        ]);
+    }
+
+
+
     public function Addpeminjaman(){
+        $this->getpeminjaman_today();
+         $this->GetPeminjamanHariIni();
+
         return view('dangerous.peminjaman');
     }   
     public function Addpeminjamanrt(){
+        $this->getpeminjaman_today();
+         $this->GetPeminjamanHariIni();
         return view('dangerous.pengembalian');
     }
 
@@ -117,12 +303,13 @@ class PeminjamanController extends Controller
             ->first();
         if ($lastTransactionOut) {
             $lastNoTrxOut = $lastTransactionOut->no_trx_out;
-            $lastNoTrxOutNum = intval(substr($lastNoTrxOut, 8));
+            $lastNoTrxOutNum = intval(substr($lastNoTrxOut, 13));
             $nextNoTrxOutNum = $lastNoTrxOutNum + 1;
         } else {
             $nextNoTrxOutNum = 1;
         }
-        $noTrxOut = 'TRX-OUT' . sprintf('%06d', $nextNoTrxOutNum);
+        $currentYear = date('Y'); // Get the current year
+        $noTrxOut = 'TRX-OUT-' . $currentYear . sprintf('%010d', $nextNoTrxOutNum);
 
         // Generate no_trx_return
         $lastTransactionReturn = Peminjaman::whereNotNull('no_trx_return')
@@ -131,12 +318,13 @@ class PeminjamanController extends Controller
             // dd($lastTransactionReturn);
         if ($lastTransactionReturn) {
             $lastNoTrxReturn = $lastTransactionReturn->no_trx_return;
-            $lastNoTrxReturnNum = intval(substr($lastNoTrxReturn, 8));
+            $lastNoTrxReturnNum = intval(substr($lastNoTrxReturn, 13));
             $nextNoTrxReturnNum = $lastNoTrxReturnNum + 1;
         } else {
             $nextNoTrxReturnNum = 1;
         }
-        $noTrxReturn = 'TRX-RTN' . sprintf('%06d', $nextNoTrxReturnNum);
+        $currentYear = date('Y'); // Get the current year
+        $noTrxReturn = 'TRX-RTN-' . $currentYear. sprintf('%010d', $nextNoTrxReturnNum);
         
 
         if ($request->remark == "PINJAM") {
@@ -169,6 +357,9 @@ class PeminjamanController extends Controller
                 $item->save();
             }
 
+            $this->getpeminjaman_today();
+             $this->GetPeminjamanHariIni();
+
            }
         
 
@@ -196,6 +387,9 @@ class PeminjamanController extends Controller
                     $item->status = 0;
                     $item->save();
                 }
+
+                $this->getpeminjaman_today();
+                 $this->GetPeminjamanHariIni();
             } else {
                 return response()->json([
                     'success' => false,
@@ -212,7 +406,6 @@ class PeminjamanController extends Controller
             'alert-type' => 'success'
         ]);
     }
-
     public function StorePeminjamanold1(Request $request)
     {
         $request->validate([
@@ -224,22 +417,24 @@ class PeminjamanController extends Controller
         $lastTransaction = Peminjaman::orderBy('created_at', 'desc')->first();
         if ($lastTransaction) {
             $lastNoTrx = $lastTransaction->no_trx_out;
-            $lastNoTrxNum = intval(substr($lastNoTrx, 8)); // Get the numeric part of the last transaction number
+            $lastNoTrxNum = intval(substr($lastNoTrx, 13)); // Get the numeric part of the last transaction number
             $nextNoTrxNum = $lastNoTrxNum + 1; // Increment the number
         } else {
             $nextNoTrxNum = 1; // Start with 1 if there are no transactions
         }
-        $noTrx = 'TRX-OUT' . sprintf('%06d', $nextNoTrxNum);
+       $currentYear = date('Y'); // Get the current year
+        $noTrxOut = 'TRX-OUT-' . $currentYear . sprintf('%010d', $nextNoTrxOutNum);
 
         $lastTransactionReturn = Peminjaman::orderBy('created_at', 'desc')->first();
         if ($lastTransactionReturn) {
             $lastNoTrxReturn = $lastTransactionReturn->no_trx_return;
-            $lastNoTrxReturnNum = intval(substr($lastNoTrxReturn, 8)); // Get the numeric part of the last return transaction number
+            $lastNoTrxReturnNum = intval(substr($lastNoTrxReturn, 13)); // Get the numeric part of the last return transaction number
             $nextNoTrxReturnNum = $lastNoTrxReturnNum + 1; // Increment the number
         } else {
             $nextNoTrxReturnNum = 1; // Start with 1 if there are no transactions
         }
-        $noTrxReturn = 'TRX-RTN' . sprintf('%06d', $nextNoTrxReturnNum);
+        $currentYear = date('Y'); // Get the current year
+        $noTrxReturn = 'TRX-RTN-' . $currentYear. sprintf('%010d', $nextNoTrxReturnNum);
             
 
 
@@ -380,6 +575,9 @@ class PeminjamanController extends Controller
 
         // Hapus transaksi
         $del->delete();
+
+        $this->getpeminjaman_today();
+         $this->GetPeminjamanHariIni();
        
 
         return response()->json([

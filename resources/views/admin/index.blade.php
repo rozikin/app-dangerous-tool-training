@@ -1,20 +1,32 @@
 @extends('admin.admin_dashboard')
 
 @section('admin')
+    <style>
+        .table1 tr th {
+            background: #35A9DB;
+            color: #fff;
+            font-weight: normal;
+        }
+
+        td {
+            text-align: center;
+        }
+    </style>
     <div class="page-content">
 
-        <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+        <div class="align-items-center">
             <div>
-                <h4 class="mb-3 mb-md-0">Welcome </h4>
+                {{-- <h4 class="mb-3 mb-md-0 text-center">Dashboard Peminjaman </h4> --}}
+                <h2 class="time-now text-center" id="timenow"></h2>
+                <div class="date-now text-center" id="datenow"></div>
             </div>
-          
+
         </div>
 
         <div class="row">
             <div class="col-12 col-xl-12 stretch-card">
                 <div class="area-datetime  align-items-center">
-                    <div class="time-now" id="timenow"></div>
-                    <div class="date-now" id="datenow"></div>
+
                 </div>
 
             </div>
@@ -25,9 +37,24 @@
                 <div class="row flex-grow-1">
                     <div class="col-md-3 grid-margin stretch-card">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body bg-danger text-white">
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                    <h6 class="card-title mb-0">Employee Registred</h6>
+                                    <h6 class="card-title mb-0">ITEM</h6>
+
+                                </div>
+                                <div class="row">
+                                    <h1 class="txt-count mb-2" id="txt-count-item">0</h1>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body bg-primary text-white">
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <h6 class="card-title mb-0">Employee (BORROW) </h6>
 
                                 </div>
                                 <div class="row">
@@ -37,25 +64,12 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-3 grid-margin stretch-card">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body bg-secondary text-white">
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                    <h6 class="card-title mb-0">IN </h6>
-
-                                </div>
-                                <div class="row">
-                                    <h1 class="txt-count mb-2" id="txt-count-in">0</h1>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-baseline">
-                                    <h6 class="card-title mb-0">OUT</h6>
+                                    <h6 class="card-title mb-0">PEMINJAMAN</h6>
 
                                 </div>
                                 <div class="row">
@@ -68,11 +82,12 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-3 grid-margin stretch-card">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body bg-info text-white">
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                    <h6 class="card-title mb-0">STAY</h6>
+                                    <h6 class="card-title mb-0">ITEM (OUT)</h6>
 
                                 </div>
                                 <div class="row">
@@ -89,137 +104,146 @@
             </div>
         </div> <!-- row -->
 
+        <div class="row mb-3">
+            <div class="col-12">
+                <h6>Peminjaman Hari ini</h6>
+                <div style="overflow-x:auto;">
+                    <table class="table table1">
+                        <tr>
+                            <th>SEW</th>
+                            <th>QC</th>
+                            <th>PACK</th>
+                            <th>CUTT</th>
+                            <th>MEK</th>
+                            <th>SPL</th>
+                            <th>WH</th>
+                            <th>FOLD</th>
+                            <th>PRINT</th>
+                            <th>IRON</th>
+                            <th>OTHER</th>
+                            <th>NOT RETURN</th>
 
+                        </tr>
+                        <tr>
+                            <td id="put_sewing"></td>
+                            <td id="put_qc"></td>
+                            <td id="put_packing"></td>
+                            <td id="put_cutting"></td>
+                            <td id="put_mekanik"></td>
+                            <td id="put_sample"></td>
+                            <td id="put_wh"></td>
+                            <td id="put_folding"></td>
+                            <td id="put_print"></td>
+                            <td id="put_iron"></td>
+                            <td id="put_other"></td>
+                            <td id="put_not_return"></td>
 
+                        </tr>
 
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
-
     <script>
-        // A $( document ).ready() block.
-        $(document).ready(function() {
+          Pusher.logToConsole = true;
+        var pusher = new Pusher('fb483b4646ebb3e3a5a7', {
+            cluster: 'ap1'
+        });
 
-              // Inisialisasi variabel untuk menyimpan data terakhir yang diterima
-              var lastEmployeeCount = null;
-            var lastInCount = null;
-            var lastOutCount = null;
-            var lastStayCount = null;
+        var channel = pusher.subscribe('peminjaman-channel');
+        channel.bind('peminjaman-updated', function(data) {
 
-            // Fungsi untuk memeriksa dan memperbarui data jika ada perubahan
-            function updateDataIfChanged() {
-                get_employee(function(employeeCount) {
-                    if (employeeCount !== lastEmployeeCount) {
-                        $('#txt-count-emp').text(employeeCount);
-                        lastEmployeeCount = employeeCount;
-                    }
-                });
-                get_in(function(inCount) {
-                    if (inCount !== lastInCount) {
-                        $('#txt-count-in').text(inCount);
-                        lastInCount = inCount;
-                    }
-                });
-                get_out(function(outCount) {
-                    if (outCount !== lastOutCount) {
-                        $('#txt-count-out').text(outCount);
-                        lastOutCount = outCount;
-                    }
-                });
-                get_stay(function(stayCount) {
-                    if (stayCount !== lastStayCount) {
-                        $('#txt-count-stay').text(stayCount);
-                        lastStayCount = stayCount;
-                    }
-                });
-            }
+            $('#txt-count-item').text(data.itemCount);
+            $('#txt-count-emp').text(data.employeeCount);
+            $('#txt-count-out').text(data.peminjamanCount);
+            $('#txt-count-stay').text(data.itemOutCount);
+        });
 
-            // Set interval untuk memeriksa pembaruan data setiap 10 detik
-            setInterval(updateDataIfChanged, 10000);
-
-            // Inisialisasi pertama kali
-            updateDataIfChanged();
-
+        var channelx = pusher.subscribe('category-channel');
+        channelx.bind('category-updated', function(data) {
+            console.log('Category updated data:', data); // Tambahkan log
+            // Update HTML elements using jQuery
+            $('#put_sewing').text(data.category.SEW);
+            $('#put_qc').text(data.QC);
+            $('#put_packing').text(data.PACK);
+            $('#put_cutting').text(data.CUTT);
+            $('#put_mekanik').text(data.MEK);
+            $('#put_sample').text(data.SPL);
+            $('#put_wh').text(data.WH);
+            $('#put_folding').text(data.FOLD);
+            $('#put_print').text(data.PRINT);
+            $('#put_iron').text(data.IRON);
+            $('#put_other').text(data.OTHER);
+            $('#put_not_return').text(data.NOT_RETURN);
         });
 
 
 
-        function get_employee(callback) {
 
+        // A $( document ).ready() block.
+        $(document).ready(function() {
+
+            fetchTotalPeminjaman();
+            fetchcountdepartment();
+
+
+        });
+
+
+        function fetchcountdepartment() {
             $.ajax({
-                url: "{{ route('get.employeecount') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
+                url: '/get/peminjaman_department',
                 method: 'GET',
-                // headers: {
-                //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                //         'content') // Menggunakan token CSRF dari meta tag
-                // },
                 success: function(response) {
-                    // Update teks pada elemen h1 dengan id "employeeCount" dengan jumlah total karyawan
-                    $('#txt-count-emp').text(response.data.employee_count);
+                    if (response.success) {
+                        $('#put_sewing').text(response.data.SEW);
+                        $('#put_qc').text(response.data.QC);
+                        $('#put_packing').text(response.data.PACK);
+                        $('#put_cutting').text(response.data.CUTT);
+                        $('#put_mekanik').text(response.data.MEK);
+                        $('#put_sample').text(response.data.SPL);
+                        $('#put_wh').text(response.data.WH);
+                        $('#put_folding').text(response.data.FOLD);
+                        $('#put_print').text(response.data.PRINT);
+                        $('#put_iron').text(response.data.IRON);
+                        $('#put_other').text(response.data.OTHER);
+                        $('#put_not_return').text(response.data.NOT_RETURN);
+                    } else {
+                        console.error('Error fetching data: ', response.message);
+                    }
                 },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    $('#txt-count-emp').html('Error fetching employee count');
+                error: function(error) {
+                    console.error('Error:', error);
                 }
             });
         }
 
-        function get_in(callback) {
+        function fetchTotalPeminjaman() {
             $.ajax({
-                url: "{{ route('get.transactionin') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
-                method: 'GET',
-
+                url: "{{ route('get.peminjaman_today') }}",
+                method: "GET",
                 success: function(response) {
-                    // 
-                    console.log(response.data.in);
-                    $('#txt-count-in').text(response.data.in);
+                    $('#txt-count-item').text(response.data.ITEM);
+                    $('#txt-count-emp').text(response.data.EMPLOYEE_BORROW);
+                    $('#txt-count-out').text(response.data.PEMINJAMAN);
+                    $('#txt-count-stay').text(response.data.ITEM_OUT);
                 },
                 error: function(xhr, status, error) {
-                    // console.error(xhr.responseText);
-                    console.log('eror');
-                    $('#txt-count-in').html('Error fetching employee count');
-                }
-            });
-        }
-
-
-        function get_out(callback) {
-
-            $.ajax({
-                url: "{{ route('get.transactionout') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
-                method: 'GET',
-
-                success: function(response) {
-                    // Update teks pada elemen h1 dengan id "employeeCount" dengan jumlah total karyawan
-                    $('#txt-count-out').text(response.data.out);
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    $('#txt-count-out').html('Error fetching data');
-                }
-            });
-        }
-
-        function get_stay(callback) {
-
-            $.ajax({
-                url: "{{ route('get.transactionstay') }}", // Ganti dengan URL yang sesuai untuk mengambil jumlah total karyawan
-                method: 'GET',
-
-                success: function(response) {
-                    // Update teks pada elemen h1 dengan id "employeeCount" dengan jumlah total karyawan
-                    $('#txt-count-stay').text(response.data.stay);
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    $('#txt-count-stay').html('Error fetching data');
+                    console.error("Terjadi kesalahan saat mengambil total peminjaman:", error);
                 }
             });
         }
 
 
-          //intital tanggal dan waktu dari id
-          var dateDisplay = document.getElementById("datenow");
+
+
+        //intital tanggal dan waktu dari id
+        var dateDisplay = document.getElementById("datenow");
         var timeDisplay = document.getElementById("timenow");
         //fungsi
         function refreshTime() {

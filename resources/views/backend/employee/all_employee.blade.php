@@ -330,6 +330,7 @@
                     $('#nik').val(data.nik);
                     $('#name').val(data.name);
                     $('#department').val(data.department);
+                 	$('#posisi').val(data.posisi);
 
                     $('#nik').attr("readonly", true)
 

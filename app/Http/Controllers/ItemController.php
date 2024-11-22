@@ -31,6 +31,12 @@ class ItemController extends Controller
             $data = Item::latest()->get();
             return Datatables::of($data)
                     ->addIndexColumn()
+                    ->addColumn('status', function($row) {
+                        $status = $row->status;
+                        $class = $status == '0' ? 'badge bg-success' : 'badge bg-danger';
+                        $statusok = $status == '0' ? 'READY' : 'DIPINJAM';
+                        return '<span class="'.$class.'">'.$statusok.'</span>';
+                    })
                     ->addColumn('action', function($row){
 
 
@@ -62,7 +68,7 @@ class ItemController extends Controller
 
                     // ->addColumn('qr_code', function($row){ return QrCode::size(30)->generate($row->code);})
 
-                    ->rawColumns(['action'])
+                    ->rawColumns(['status','action'])
 
                     ->make(true);
                  
@@ -148,6 +154,7 @@ class ItemController extends Controller
                     'category' => $request->category, 
                     'posisi' => $request->posisi,
                     'unit' => $request->unit,
+                    'status' => $request->status,
         
                 ]);
         
@@ -183,6 +190,7 @@ class ItemController extends Controller
                     'category' => $request->category,
                     'posisi' => $request->posisi,
                     'unit' => $request->unit,
+                    'status' => $request->status,
         
                 ]);
         

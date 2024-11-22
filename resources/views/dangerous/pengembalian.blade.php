@@ -12,7 +12,7 @@
     <meta name="keywords"
         content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
-    <title>E - DANGROUS</title>
+    <title>E - DANGEROUS</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,13 +20,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <!-- End fonts -->
 
-
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/core/core.css') }}">
-
 
     <link rel="stylesheet" href="{{ asset('backend/assets/fonts/feather-font/css/iconfont.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/sweetalert2/sweetalert2.min.css') }}">
-
 
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('backend/assets/css/demo1/style.css') }}">
@@ -35,19 +32,13 @@
 
     <link rel="stylesheet" href="{{ asset('css/toastr.css') }}">
 
-
     {{-- <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.png') }}" /> --}}
-
-
-
 
     <!-- javascript -->
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2/sweetalert2.min.js') }}"></script>
-
-
-
+    <script src="{{ asset('js/pusher.min.js') }}"></script>
 
     <style>
         /* style jam digital */
@@ -57,7 +48,6 @@
             text-align: center;
             color: rgb(255, 230, 0);
             padding: 0px 0px 0px 0px;
-
         }
 
         .date-now {
@@ -91,18 +81,15 @@
             height: 290px;
 
         } */
-
         .area-input {
             margin-top: 0px;
             padding: 0px;
             width: 100%;
             height: 130px;
-
         }
 
         .card {
             background-color: black;
-
         }
 
         .card-title {
@@ -127,11 +114,23 @@
         .hidden-input {
             display: none;
         }
+
+        .menu-now {
+            font-size: 10px;
+            font-weight: 600;
+            color: rgb(197, 197, 197);
+            text-align: center;
+            padding: 0px 0px 0px 0px;
+        }
+
+        .pinjam-now {
+            font-size: 30px;
+            font-weight: 600;
+            color: rgb(197, 197, 197);
+            text-align: center;
+            padding: 0px 0px 0px 0px;
+        }
     </style>
-
-
-
-
 
 </head>
 
@@ -145,9 +144,11 @@
                 <div class="row">
                     <div class="col-12 col-xl-12 stretch-card">
                         <div class="area-datetime  align-items-center">
+                            <div class="menu-now">PENGEMBALIAN</div>
                             <div class="time-now" id="timenow"></div>
                             <div class="date-now" id="datenow"></div>
-                            <div class="menu-now">PENGEMBALIAN</div>
+                            <div class="menu-now">PEMINJAMAN HARI INI</div>
+                            <div class="pinjam-now" id="pinjam-now">0</div>
                         </div>
                     </div>
                 </div>
@@ -170,7 +171,6 @@
                                 <input type="text" class="form-control hidden-input" id="employee_id"
                                     name="employee_id" required>
 
-
                             </div>
 
                             <div class="col-6">
@@ -186,9 +186,7 @@
 
                         </div>
 
-
                     </form>
-
 
                 </div>
 
@@ -216,7 +214,6 @@
                     </table>
                 </div>
 
-
             </div>
         </div>
 
@@ -224,17 +221,31 @@
 
 
 
-
-
-
-
     <script type="text/javascript">
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('fb483b4646ebb3e3a5a7', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('peminjaman-channel');
+        channel.bind('peminjaman-updated', function(data) {
+
+            $('#pinjam-now').text(data.peminjamanCount);
+        });
+
+
+
+
+
+
         $(document).ready(function() {
 
 
 
             $('#remark').val('KEMBALI');
             fetchTransactions();
+            fetchTotalPeminjaman();
 
             clear_input();
 
@@ -373,6 +384,7 @@
                         // Perbarui jumlah IN
 
                         fetchTransactions();
+                        // fetchTotalPeminjaman();
                         clear_input();
                         $('#nik').focus();
 
@@ -404,6 +416,20 @@
             });
         }
 
+
+        function fetchTotalPeminjaman() {
+            $.ajax({
+                url: "{{ route('get.peminjaman_today') }}",
+                method: "GET",
+                success: function(response) {
+                    $('#pinjam-now').text(response.total);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Terjadi kesalahan saat mengambil total peminjaman:", error);
+                }
+            });
+        }
+
         function formatDateTime(dateTimeString) {
             const date = new Date(dateTimeString);
             const options = {
@@ -416,7 +442,7 @@
 
         function fetchTransactions() {
             $.ajax({
-                url: "{{ route('get.peminjamanlimit') }}",
+                url: "{{ route('get.peminjamanrtlimit') }}",
                 method: "GET",
                 success: function(response) {
                     var tbody = $('#transaction-table-body');
@@ -518,13 +544,7 @@
         setInterval(refreshTime, 2000);
     </script>
 
-
-
-
 </body>
-
-
-
 
 </html>
 

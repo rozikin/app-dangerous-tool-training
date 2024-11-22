@@ -3,8 +3,6 @@
 @section('admin')
     <div class="page-content mt-5">
 
-
-
         <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
@@ -12,7 +10,6 @@
 
                         <div>
                             <div class="row">
-
 
                                 <div class="col">
                                     <h6 class="card-title text-center">DANGEOURS TOOL</h6>
@@ -44,29 +41,18 @@
                                         </div>
                                     </div>
 
-
-
-
                                 </div>
 
                                 <button type="submit" class="btn btn-danger mt-2" id="tampilkan">Tampilkan</button>
 
                                 <button class="btn btn-primary mt-2 btn-sm" id="export-excel"><i class="feather-10"
-                                    data-feather="download"></i> &nbsp;Export</button>
-
-
-
-
+                                        data-feather="download"></i> &nbsp;Export</button>
 
                             </form>
                         </div>
 
+                        <div class="tampils" id="tampils" style="display: none">
 
-
-                        <div class="tampils" id="tampils" style="display: none" >
-
-
-                          
                             <div class="table-responsive">
                                 <table id="dataTableExamplex" class="table table-sm">
                                     <thead>
@@ -97,9 +83,6 @@
 
         </div>
     </div>
- 
-
-
 
     <script>
         $(document).ready(function() {
@@ -151,6 +134,9 @@
                     "render": function(data, type, row) {
                         // Format the date and time
                         var dateTime = new Date(data);
+                        if (isNaN(dateTime)) {
+                            return ''; // Return empty string for invalid dates
+                        }
                         var formattedDateTime = dateTime.toLocaleDateString('id-ID') + ' ' + dateTime
                             .toLocaleTimeString('id-ID');
                         return formattedDateTime;
@@ -205,7 +191,90 @@
                         "name": "action"
                     }
                 ],
-               
+
+            });
+
+
+
+            $('body').on('click', '.deletePeminjaman', function() {
+
+
+
+                var item_id = $(this).data("id");
+
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger me-2'
+                    },
+                    buttonsStyling: false,
+                })
+
+                swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.value) {
+
+                        $.ajax({
+                            type: "GET",
+                            url: "/delete/peminjaman/" + item_id,
+                            success: function(data) {
+                                table.ajax.reload(null, false);
+
+                                swalWithBootstrapButtons.fire({
+                                    title: 'Deleted!',
+                                    text: 'Your file has been deleted.',
+                                    icon: 'success',
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    willClose: () => {
+                                        // Optional: Add any additional actions you want to perform after the alert closes
+                                    }
+                                })
+                            },
+                            error: function(data) {
+                                console.log('Error:', data);
+
+                                swalWithBootstrapButtons.fire({
+                                    title: 'Cancelled!',
+                                    text: `'There is relation data'.${data.responseJSON.message}`,
+                                    icon: 'error',
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    willClose: () => {
+                                        // Optional: Add any additional actions you want to perform after the alert closes
+                                    }
+                                })
+
+
+
+                            }
+                        });
+
+
+                    } else if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire({
+                            title: 'Cancelled!',
+                            text: 'Your file is safe :)',
+                            icon: 'error',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            willClose: () => {
+                                // Optional: Add any additional actions you want to perform after the alert closes
+                            }
+                        })
+                    }
+                })
+
             });
         }
     </script>

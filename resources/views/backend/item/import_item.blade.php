@@ -39,7 +39,7 @@
 
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Excel File Improt</label>
-                                    <input type="file" class="form-control" id="import_file" name="import_file">
+                                    <input type="file" class="form-control" id="import_file" name="import_file" required>
                                     <x-input-error :messages="$errors->get('login')" class="mt-2" />
 
                                 </div>

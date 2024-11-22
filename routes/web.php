@@ -14,6 +14,10 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\PhotoReturnController;
+use App\Http\Controllers\SerahTerimaController;
+use App\Http\Controllers\BasicOperationController;
+use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Exports\PeminjamanExport;
 
@@ -131,10 +135,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/get/categoryglobal', 'GetCategoryGlobal')->name('get.categoryglobal');
         Route::get('/add/category', 'Addcategory')->name('add.category')->middleware('can:add.category');
       
-        Route::post('/store/category', 'Storecategory')->name('store.category');
+        Route::post('/store/category', 'Storecategory')->name('store.category')->middleware('can:add.category');
         Route::get('/edit/category/{id}', 'Editcategory')->name('edit.category')->middleware('can:edit.category');
-        Route::post('/update/category/{id}', 'Updatecategory')->name('update.category');
-        Route::get('/delete/category/{id}', 'Deletecategory')->name('delete.category');
+        Route::post('/update/category/{id}', 'Updatecategory')->name('update.category')->middleware('can:edit.category');
+        Route::get('/delete/category/{id}', 'Deletecategory')->name('delete.category')->middleware('can:delete.category');
         Route::get('/export/category', 'Exportcategory')->name('export.category');
     });
 
@@ -146,17 +150,38 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/add/employee', 'AddEmployee')->name('add.employee')->middleware('can:add.employee');
         Route::post('/store/employee', 'StoreEmployee')->name('store.employee');
         Route::get('/edit/employee/{id}', 'EditEmployee')->name('edit.employee')->middleware('can:edit.employee');
-        Route::post('/update/employee/{id}', 'UpdateEmployee')->name('update.employee');
-        Route::get('/delete/employee/{id}', 'DeleteEmployee')->name('delete.employee');
-        Route::get('/export/employee', 'ExportEmployee')->name('export.employee');
+        Route::post('/update/employee/{id}', 'UpdateEmployee')->name('update.employee')->middleware('can:edit.employee');
+        Route::get('/delete/employee/{id}', 'DeleteEmployee')->name('delete.employee')->middleware('can:delete.employee');
+        Route::get('/export/employee', 'ExportEmployee')->name('export.employee')->middleware('can:export.employee');;
         Route::get('/get/employee', 'Getemployee')->name('get.employee')->middleware('can:all.employee');
         Route::get('/get/employeecount', 'GetEmployeeCount')->name('get.employeecount');
         Route::get('/get/posisiemployee', 'GetPosisi')->name('get.posisiemployee');
         Route::post('/check/employee', 'CheckEmployee')->name('check.employee');
-        Route::get('/print/employee', 'PrintEmployee')->name('print.employee');
-        Route::post('/pdf/employee', 'exportPDF')->name('pdf.employee');
-        Route::post('/import/employee', 'ImportEmployee')->name('import.employee');
-        Route::get('/import/employees', 'Importemployees')->name('import.employees');
+        Route::get('/print/employee', 'PrintEmployee')->name('print.employee')->middleware('can:export.employee');
+        Route::post('/pdf/employee', 'exportPDF')->name('pdf.employee')->middleware('can:export.employee');
+        Route::post('/import/employee', 'ImportEmployee')->name('import.employee')->middleware('can:import.employee');
+        Route::get('/import/employees', 'Importemployees')->name('import.employees')->middleware('can:import.employee');
+      
+    });
+
+
+    Route::controller(BasicOperationController::class)->group(function () {
+        Route::get('/all/basicoperation', 'AllBasicOperation')->name('all.basicoperation')->middleware('can:all.basicoperation');
+        Route::get('/add/basicoperation', 'AddBasicOperation')->name('add.basicoperation')->middleware('can:add.basicoperation');
+        Route::post('/store/basicoperation', 'StoreBasicOperation')->name('store.basicoperation');
+        Route::get('/edit/basicoperation/{id}', 'EditBasicOperation')->name('edit.basicoperation')->middleware('can:edit.basicoperation');
+        Route::post('/update/basicoperation/{id}', 'UpdateBasicOperation')->name('update.basicoperation')->middleware('can:edit.basicoperation');
+        Route::get('/delete/basicoperation/{id}', 'DeleteBasicOperation')->name('delete.basicoperation')->middleware('can:delete.basicoperation');
+        Route::get('/export/basicoperation', 'ExportBasicOperation')->name('export.basicoperation')->middleware('can:export.basicoperation');;
+        Route::get('/get/basicoperation', 'Getbasicoperation')->name('get.basicoperation')->middleware('can:all.basicoperation');
+        Route::get('/get/basicoperationcount', 'GetBasicOperationCount')->name('get.basicoperationcount');
+        Route::get('/get/posisibasicoperation', 'GetPosisi')->name('get.posisibasicoperation');
+        Route::post('/check/basicoperation', 'CheckBasicOperation')->name('check.basicoperation');
+        Route::get('/print/basicoperation', 'PrintBasicOperation')->name('print.basicoperation')->middleware('can:export.basicoperation');
+        Route::post('/pdf/basicoperation', 'exportPDF')->name('pdf.basicoperation')->middleware('can:export.basicoperation');
+        Route::post('/import/basicoperation', 'ImportBasicOperation')->name('import.basicoperation')->middleware('can:import.basicoperation');
+        Route::get('/import/basicoperations', 'Importbasicoperations')->name('import.basicoperations')->middleware('can:import.basicoperation');
+        Route::get('/get/basicoperationdata', 'Getbasicoperationdata')->name('get.basicoperationdata')->middleware('can:all.basicoperation');
       
     });
 
@@ -169,16 +194,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::post('/store/item', 'Storeitem')->name('store.item');
         Route::get('/edit/item/{id}', 'Edititem')->name('edit.item')->middleware('can:edit.item');
         Route::post('/update/item/{id}', 'Updateitem')->name('update.item');
-        Route::get('/delete/item/{id}', 'DeleteItem')->name('delete.item');
-        Route::get('/export/item', 'Exportitem')->name('export.item');
+        Route::get('/delete/item/{id}', 'DeleteItem')->name('delete.item')->middleware('can:delete.item');
+        Route::get('/export/item', 'Exportitem')->name('export.item')->middleware('can:export.item');
         Route::get('/get/item', 'Getitem')->name('get.item')->middleware('can:all.item');
         Route::get('/get/itemcount', 'GetitemCount')->name('get.itemcount');
         Route::get('/get/posisi', 'GetPosisi')->name('get.posisi');
         Route::post('/check/item', 'Checkitem')->name('check.item');
-        Route::get('/print/item', 'Printitem')->name('print.item');
-        Route::post('/pdf/item', 'exportPDF')->name('pdf.item');
-        Route::post('/import/item', 'Importitem')->name('import.item');
-        Route::get('/import/items', 'Importitems')->name('import.items');
+        Route::get('/print/item', 'Printitem')->name('print.item')->middleware('can:export.item');
+        Route::post('/pdf/item', 'exportPDF')->name('pdf.item')->middleware('can:export.item');
+        Route::post('/import/item', 'Importitem')->name('import.item')->middleware('can:import.item');
+        Route::get('/import/items', 'Importitems')->name('import.items')->middleware('can:import.item');
       
     });
 
@@ -207,25 +232,78 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
       
     });
 
-
     
     Route::controller(PeminjamanController::class)->group(function () {
        
         Route::get('/all/peminjaman', 'Allpeminjaman')->name('all.peminjaman')->middleware('can:all.peminjaman');
-        Route::get('/get/peminjaman', 'getpeminjaman')->name('get.peminjaman');
-        Route::get('/get/peminjamanoke', 'getpeminjamanoke')->name('get.peminjamanoke');
+        Route::get('/get/peminjaman', 'getpeminjaman')->name('get.peminjaman')->middleware('can:get.peminjaman');
+        Route::get('/get/peminjaman_today', 'getpeminjaman_today')->name('get.peminjaman_today');
+        Route::get('/get/peminjaman_department', 'GetPeminjamanHariIni')->name('get.peminjaman_department');
+        Route::get('/get/peminjaman_employee', 'getpeminjaman_employee')->name('get.peminjaman_employee');
         Route::get('/add/peminjaman', 'Addpeminjaman')->name('add.peminjaman')->middleware('can:add.peminjaman');
         Route::get('/add/peminjamanrt', 'Addpeminjamanrt')->name('add.peminjamanrt')->middleware('can:add.peminjaman');
         Route::post('/store/peminjaman', 'StorePeminjaman')->name('store.peminjaman');
         Route::get('/edit/peminjaman/{id}', 'Editpeminjaman')->name('edit.peminjaman')->middleware('can:edit.peminjaman');
         Route::post('/update/peminjaman/{id}', 'Updatepeminjaman')->name('update.peminjaman');
-        Route::get('/delete/peminjaman/{id}', 'Deletepeminjaman')->name('delete.peminjaman');               
-        Route::get('/export/peminjaman', 'export')->name('export.peminjaman');
+        Route::get('/delete/peminjaman/{id}', 'Deletepeminjaman')->name('delete.peminjaman')->middleware('can:delete.peminjaman');                  
+        Route::get('/export/peminjaman', 'export')->name('export.peminjaman')->middleware('can:export.peminjaman');;
         Route::get('/get/peminjamanlimit', 'Getpeminjamanlimit')->name('get.peminjamanlimit')->middleware('can:all.peminjaman');
+        Route::get('/get/peminjamanrtlimit', 'Getpeminjamanrtlimit')->name('get.peminjamanrtlimit')->middleware('can:all.peminjaman');
         Route::get('/get/peminjamanin', 'GetpeminjamanIN')->name('get.peminjamanin');
         Route::get('/get/peminjamanrt', 'Getpeminjamanrt')->name('get.peminjamanrt');
         Route::get('/get/peminjamanstay', 'GetpeminjamanSTAY')->name('get.peminjamanstay');
         Route::get('/pdf/peminjaman', 'exportPdf')->name('pdf.peminjaman');
+      
+    });
+
+      //color User All Color
+      Route::controller(PhotoReturnController::class)->group(function () {
+        Route::get('/all/photoreturn', 'Allphotoreturn')->name('all.photoreturn')->middleware('can:all.photoreturn');
+        Route::get('/get/photoreturn', 'Getphotoreturn')->name('get.photoreturn')->middleware('can:all.photoreturn');
+        Route::get('/get/photoreturnglobal', 'GetphotoreturnGlobal')->name('get.photoreturnGlobal');
+        Route::get('/add/photoreturn', 'Addphotoreturn')->name('add.photoreturn')->middleware('can:add.photoreturn');
+      
+        Route::post('/store/photoreturn', 'Storephotoreturn')->name('store.photoreturn');
+        Route::get('/edit/photoreturn/{id}', 'Editphotoreturn')->name('edit.photoreturn')->middleware('can:edit.photoreturn');
+        Route::post('/update/photoreturn/{id}', 'Updatephotoreturn')->name('update.photoreturn');
+        Route::get('/delete/photoreturn/{id}', 'Deletephotoreturn')->name('delete.photoreturn')->middleware('can:delete.photoreturn');;
+        Route::get('/export/photoreturn', 'Exportphotoreturn')->name('export.photoreturn');
+    });
+      Route::controller(SerahTerimaController::class)->group(function () {
+        Route::get('/all/serahterima', 'Allserahterima')->name('all.serahterima')->middleware('can:all.serahterima');
+        Route::get('/get/serahterima', 'Getserahterima')->name('get.serahterima')->middleware('can:all.serahterima');
+        Route::get('/get/serahterimaglobal', 'GetserahterimaGlobal')->name('get.serahterimaGlobal');
+        Route::get('/add/serahterima', 'Addserahterima')->name('add.serahterima')->middleware('can:add.serahterima');
+      
+        Route::post('/store/serahterima', 'Storeserahterima')->name('store.serahterima')->middleware('can:add.serahterima');
+        Route::get('/edit/serahterima/{id}', 'Editserahterima')->name('edit.serahterima')->middleware('can:edit.serahterima');
+        Route::post('/update/serahterima/{id}', 'Updateserahterima')->name('update.serahterima');
+        Route::get('/delete/serahterima/{id}', 'Deleteserahterima')->name('delete.serahterima')->middleware('can:delete.serahterima');;
+        Route::get('/export/serahterima', 'Exportserahterima')->name('export.serahterima');
+        Route::post('/import/serahterima', 'Importserahterima')->name('import.serahterima')->middleware('can:import.serahterima');
+        Route::get('/import/serahterimas', 'Importserahterimas')->name('import.serahterimas')->middleware('can:import.serahterima');
+    });
+ 
+
+
+
+    Route::controller(TrainingController::class)->group(function () {
+        Route::get('/all/training', 'AllTraining')->name('all.training')->middleware('can:all.training');
+        Route::get('/add/training', 'AddTraining')->name('add.training')->middleware('can:add.training');
+        Route::post('/store/training', 'StoreTraining')->name('store.training');
+        Route::get('/edit/training/{id}', 'EditTraining')->name('edit.training')->middleware('can:edit.training');
+        Route::post('/update/training/{id}', 'UpdateTraining')->name('update.training')->middleware('can:edit.training');
+        Route::get('/delete/training/{id}', 'DeleteTraining')->name('delete.training')->middleware('can:delete.training');
+        Route::get('/export/training', 'Exporttraining')->name('export.training')->middleware('can:export.training');;
+        Route::get('/get/training', 'Gettraining')->name('get.training')->middleware('can:all.training');
+        Route::get('/get/traininglimit', 'Gettraininglimit')->name('get.traininglimit')->middleware('can:all.training');
+        Route::get('/get/trainingcount', 'GetTrainingCount')->name('get.trainingcount');
+        Route::get('/get/posisitraining', 'GetPosisi')->name('get.posisitraining');
+        Route::post('/check/training', 'CheckTraining')->name('check.training');
+        Route::get('/print/training', 'PrintTraining')->name('print.training')->middleware('can:export.training');
+        Route::post('/pdf/training', 'exportPDF')->name('pdf.training')->middleware('can:export.training');
+        Route::post('/import/training', 'ImportTraining')->name('import.training')->middleware('can:import.training');
+        Route::get('/import/trainings', 'Importtrainings')->name('import.trainings')->middleware('can:import.training');
       
     });
 
@@ -237,5 +315,3 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 }); 
 
 //end admin middleware
-
-

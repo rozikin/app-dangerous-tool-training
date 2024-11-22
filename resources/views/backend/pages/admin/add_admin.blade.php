@@ -25,33 +25,33 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Admin Name</label>
                                 <input type="text" class="form-control" id="username" name="username"
-                                    autocomplete="off" autofocus>
+                                    autocomplete="off" autofocus required>
                             </div>
                             <div class="mb-3">
                                 <label for="name" class="form-label">Admin Name</label>
                                 <input type="text" class="form-control" id="name" name="name"
-                                    autocomplete="off">
+                                    autocomplete="off" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="email" class="form-label">Admin Email</label>
-                                <input type="email" class="form-control" id="email" name="email" autocomplete="off">
+                                <input type="email" class="form-control" id="email" name="email" autocomplete="off" required>
 
                             </div>
 
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Admin phone</label>
-                                <input type="phone" class="form-control" id="phone" name="phone" autocomplete="off">
+                                <input type="phone" class="form-control" id="phone" name="phone" autocomplete="off" required>
                             </div>
                             <div class="mb-3">
                                 <label for="address" class="form-label">Admin Address</label>
-                                <input type="text" class="form-control" id="address" name="address" autocomplete="off">
+                                <input type="text" class="form-control" id="address" name="address" autocomplete="off" required>
 
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Admin password</label>
                                 <input type="password" class="form-control" id="password" name="password"
-                                    autocomplete="off">
+                                    autocomplete="off" required>
 
                             </div>
 

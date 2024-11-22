@@ -11,7 +11,7 @@ class Item extends Model
 
     protected $guarded = [];
 
-    protected $fillable = ['code', 'name','category','posisi','unit'];
+    protected $fillable = ['code', 'name','category','posisi','unit','status'];
 
 
     public function peminjaman(): HasMany

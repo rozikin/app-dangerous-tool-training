@@ -45,6 +45,7 @@
                                         <th>Posisi</th>
                                         <th>Category</th>
                                         <th>Unit</th>
+                                        <th>Status</th>
                                         <th>Action</th>
 
                                     </tr>
@@ -106,17 +107,17 @@
                         <div class="mb-3">
                             <label class="form-label">Category</label>
                             <select id="category" name="category" class="js-example-basic-single form-select" style="width: 100%">
-                                {{-- <option value="TX">Texas</option>
-                                <option value="NY">New York</option>
-                                <option value="FL">Florida</option>
-                                <option value="KN">Kansas</option>
-                                <option value="HW">Hawaii</option> --}}
+                            
 
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="unit" class="form-label">Unit:</label>
                             <input type="text" class="form-control" id="unit" name="unit">
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status:  isikan 0 (ready)</label>
+                            <input type="number" class="form-control" id="status" name="status">
                         </div>
 
                     </form>
@@ -151,6 +152,8 @@
                 $(this).find('[autofocus]').focus();
             });
 
+            $('#status').val('0');
+
 
 
 
@@ -184,6 +187,10 @@
                     {
                         data: 'unit',
                         name: 'unit'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
                     },
 
                     {
@@ -324,6 +331,7 @@
                     $('#category').val(data.category);
                     $('#posisi').val(data.posisi);
                     $('#unit').val(data.unit);
+                    $('#status').val(data.status);
 
                     // $('#category').val(data.category_id).trigger('change');
 
@@ -427,7 +435,6 @@
                 })
 
             });
-
 
 
 

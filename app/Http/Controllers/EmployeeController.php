@@ -12,6 +12,7 @@ use BaconQrCode\Renderer\Image\Png;
 use BaconQrCode\Writer;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\EmployeesImport;
+use App\Exports\EmployeesExport;
 
 class EmployeeController extends Controller
 {
@@ -263,6 +264,11 @@ class EmployeeController extends Controller
         //
     }
 
+    public function ExportEmployee(){
+        
+            return Excel::download(new EmployeesExport, 'employees.xlsx');
+    
+    }
 
 
 

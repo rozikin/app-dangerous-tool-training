@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost/app-needle'),
+    'url' => env('APP_URL', 'http://localhost/laravel'),
 
     'asset_url' => env('ASSET_URL'),
 
@@ -177,6 +177,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Yajra\DataTables\ButtonsServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
 
     ])->toArray(),
@@ -197,6 +198,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),
 
 ];

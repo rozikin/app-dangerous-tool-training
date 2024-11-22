@@ -12,7 +12,7 @@
     <meta name="keywords"
         content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
-    <title>E - DANGROUS</title>
+    <title>E - DANGEROUS</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,13 +20,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <!-- End fonts -->
 
-
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/core/core.css') }}">
-
 
     <link rel="stylesheet" href="{{ asset('backend/assets/fonts/feather-font/css/iconfont.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/vendors/sweetalert2/sweetalert2.min.css') }}">
-
 
     <!-- Layout styles -->
     <link rel="stylesheet" href="{{ asset('backend/assets/css/demo1/style.css') }}">
@@ -35,19 +32,13 @@
 
     <link rel="stylesheet" href="{{ asset('css/toastr.css') }}">
 
-
     {{-- <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.png') }}" /> --}}
-
-
-
 
     <!-- javascript -->
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2/sweetalert2.min.js') }}"></script>
-
-
-
+    <script src="{{ asset('js/pusher.min.js') }}"></script>
 
     <style>
         /* style jam digital */
@@ -57,7 +48,6 @@
             text-align: center;
             color: rgb(255, 230, 0);
             padding: 0px 0px 0px 0px;
-
         }
 
         .date-now {
@@ -76,6 +66,14 @@
             padding: 0px 0px 0px 0px;
         }
 
+        .pinjam-now {
+            font-size: 30px;
+            font-weight: 600;
+            color: rgb(197, 197, 197);
+            text-align: center;
+            padding: 0px 0px 0px 0px;
+        }
+
         .area-datetime {
             margin-top: 0px;
             padding: 0px;
@@ -84,25 +82,15 @@
             background-color: black;
         }
 
-        /* .table-pinjam {
-            margin-top: 0px;
-            padding: 0px;
-            width: 100%;
-            height: 290px;
-
-        } */
-
         .area-input {
             margin-top: 0px;
             padding: 0px;
             width: 100%;
             height: 130px;
-
         }
 
         .card {
             background-color: black;
-
         }
 
         .card-title {
@@ -129,10 +117,6 @@
         }
     </style>
 
-
-
-
-
 </head>
 
 <body class="bg-black" id="content-scan" onclick="openFullscreen();">
@@ -145,9 +129,11 @@
                 <div class="row">
                     <div class="col-12 col-xl-12 stretch-card">
                         <div class="area-datetime  align-items-center">
+                            <div class="menu-now">PEMINJAMAN</div>
                             <div class="time-now" id="timenow"></div>
                             <div class="date-now" id="datenow"></div>
-                            <div class="menu-now">PEMINJAMAN</div>
+                            <div class="menu-now">PEMINJAMAN HARI INI</div>
+                            <div class="pinjam-now" id="pinjam-now">0</div>
                         </div>
                     </div>
                 </div>
@@ -170,7 +156,6 @@
                                 <input type="text" class="form-control hidden-input" id="employee_id"
                                     name="employee_id" required>
 
-
                             </div>
 
                             <div class="col-6">
@@ -186,9 +171,7 @@
 
                         </div>
 
-
                     </form>
-
 
                 </div>
 
@@ -214,25 +197,51 @@
                     </table>
                 </div>
 
-
             </div>
         </div>
 
     </div>
 
-
-
-
-
-
+    {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script> --}}
+    {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
 
     <script type="text/javascript">
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('fb483b4646ebb3e3a5a7', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('peminjaman-channel');
+        channel.bind('peminjaman-updated', function(data) {
+
+            $('#pinjam-now').text(data.peminjamanCount);
+        });
+
+        // Tambahkan log untuk memeriksa state Pusher
+        pusher.connection.bind('state_change', function(states) {
+            console.log('State changed:', states);
+        });
+
+        pusher.connection.bind('connected', function() {
+            console.log('Successfully connected to Pusher');
+        });
+
+        pusher.connection.bind('error', function(err) {
+            console.error('Connection error:', err);
+        });
+
+
+
+
+
         $(document).ready(function() {
 
 
 
             $('#remark').val('PINJAM');
             fetchTransactions();
+            fetchTotalPeminjaman();
 
             clear_input();
 
@@ -371,6 +380,7 @@
                         // Perbarui jumlah IN
 
                         fetchTransactions();
+
                         clear_input();
                         $('#nik').focus();
 
@@ -405,6 +415,20 @@
             });
         }
 
+        function fetchTotalPeminjaman() {
+            $.ajax({
+                url: "{{ route('get.peminjaman_today') }}",
+                method: "GET",
+                success: function(response) {
+                    $('#pinjam-now').text(response.total);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Terjadi kesalahan saat mengambil total peminjaman:", error);
+                }
+            });
+        }
+
+
         function formatDateTime(dateTimeString) {
             const date = new Date(dateTimeString);
             const options = {
@@ -429,7 +453,7 @@
                         const updatedAt = transaction.updated_at !== transaction.created_at ?
                             formatDateTime(transaction.updated_at) : '';
 
-                            
+
                         var row = `
                                 <tr>
                                     <td>${index + 1}</td>
@@ -485,6 +509,8 @@
 
 
 
+
+
         //intital tanggal dan waktu dari id
         var dateDisplay = document.getElementById("datenow");
         var timeDisplay = document.getElementById("timenow");
@@ -518,13 +544,7 @@
         setInterval(refreshTime, 1000);
     </script>
 
-
-
-
 </body>
-
-
-
 
 </html>
 

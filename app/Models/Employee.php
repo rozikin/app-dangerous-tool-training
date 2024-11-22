@@ -22,4 +22,9 @@ class Employee extends Model
     {
         return $this->hasMany(Peminjaman::class);
     }
+
+    public function training(): HasMany
+    {
+        return $this->hasMany(Training::class);
+    }
 }

@@ -24,9 +24,9 @@ class EmployeesImport implements ToModel, WithValidation,WithHeadingRow
     {
         return [
             'nik' => ['required','unique:employees' ],
-            'name' => [ 'required'],
-            'department' => [ 'required'],
-            'posisi' => [ 'required'],
+            'name' => ['required'],
+            'department' => ['required'],
+            'posisi' => ['required'],
            
         ];
     }
