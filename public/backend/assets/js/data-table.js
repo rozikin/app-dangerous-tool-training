@@ -29,12 +29,12 @@ $(function() {
     // scrollX: true,
     // scrollY: 300
      
-      dom: 'Bfrtip',
+      // dom: 'Bfrtip',
       // "aLengthMenu": [
       //   [10, 30, 50, -1],
       //   [10, 30, 50, "All"]
       // ],
-      buttons: [ {extend:'excel' ,exportOptions: {stripHtml: true }},'pdf' ],
+      // buttons: [ {extend:'excel' ,exportOptions: {stripHtml: true }},'pdf' ],
       // "iDisplayLength": 10,
       // "language": {
       //   search: ""

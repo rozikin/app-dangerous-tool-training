@@ -51,6 +51,9 @@
 
                                 <button type="submit" class="btn btn-danger mt-2" id="tampilkan">Tampilkan</button>
 
+                                <button class="btn btn-primary mt-2 btn-sm" id="export-excel"><i class="feather-10"
+                                    data-feather="download"></i> &nbsp;Export</button>
+
 
 
 
@@ -63,22 +66,7 @@
                         <div class="tampils" id="tampils" style="display: none" >
 
 
-                            <div class="row mt-3">
-                                <div class="col">
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-
-                                        <a href="{{ route('add.peminjaman') }}" class="btn btn-primary"><i
-                                                class="feather-10" data-feather="plus"></i> &nbsp;Add</a>
-                                        {{-- <a href="{{ route('import.items') }}"  class="btn btn-primary"><i class="feather-10" data-feather="upload"></i>  &nbsp;Import</a> --}}
-                                        <button class="btn btn-primary" id="export-excel"><i class="feather-10"
-                                                data-feather="download"></i> &nbsp;Export</button>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
+                          
                             <div class="table-responsive">
                                 <table id="dataTableExamplex" class="table table-sm">
                                     <thead>

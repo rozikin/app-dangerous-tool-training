@@ -68,50 +68,6 @@ class PeminjamanController extends Controller
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }
-    public function getpeminjamanoke(Request $request)
-    {
-      // Retrieve start and end dates from the request
-    $startDate = $request->start_date;
-    $endDate = $request->end_date;
-
-    // Validate if start and end dates are in correct format
-    try {
-        $startDate = \Carbon\Carbon::parse($startDate)->startOfDay();
-        $endDate = \Carbon\Carbon::parse($endDate)->endOfDay();
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Invalid date format.'], 400);
-    }
-
-    // Fetch data from the database based on the date range
-    $borrowings = Peminjaman::whereBetween('created_at', [$startDate, $endDate])->get();
-
-      
-
-
-      
-
-       // Render HTML for the table rows
-       $html = '';
-       foreach ($borrowings as $index => $borrowing) {
-           $html .= '<tr>';
-           $html .= '<td>' . ($index + 1) . '</td>';
-           $html .= '<td>' . $borrowing->trx_out . '</td>';
-           $html .= '<td>' . $borrowing->date_in . '</td>';
-           $html .= '<td>' . $borrowing->nik . '</td>';
-           $html .= '<td>' . $borrowing->name . '</td>';
-           $html .= '<td>' . $borrowing->department . '</td>';
-           $html .= '<td>' . $borrowing->trx_return . '</td>';
-           $html .= '<td>' . $borrowing->sku . '</td>';
-           $html .= '<td>' . $borrowing->item_name . '</td>';
-           $html .= '<td>' . $borrowing->date_out . '</td>';
-           $html .= '<td>' . $borrowing->remark . '</td>';
-           $html .= '<td><!-- Action buttons, if any --></td>';
-           $html .= '</tr>';
-       }
-
-       // Return the HTML content
-       return $html;
-    }
 
     public function GetPeminjamanlimit(){
         $transactions = Peminjaman::with('employee', 'item')
@@ -435,8 +391,14 @@ class PeminjamanController extends Controller
 
     public function export(Request $request)
     {
-        $export = new PeminjamanExport($startDate, $endDate);
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
-        return Excel::download($export, 'peminjaman.xlsx');
+        // Ambil data dari database berdasarkan rentang tanggal
+        $data = Peminjaman::with(['employee', 'item']);
+        $data = Peminjaman::whereBetween('created_at', [$startDate, $endDate])->get();
+
+        // Ekspor data ke Excel menggunakan class PeminjamanExport
+        return Excel::download(new PeminjamanExport($data), 'peminjaman.xlsx');
     }
 }
